@@ -61,6 +61,11 @@ export const globalStyles = StyleSheet.create({
   flexBasisAuto: {flexBasis: 'auto'},
   flexBasisFull: {flexBasis: '100%'},
 
+  //text transform
+  uppercase: {textTransform: 'uppercase'},
+  lowercase: {textTransform: 'lowercase'},
+  capitalize: {textTransform: 'capitalize'},
+
   // Gap (spacing between items in flex layouts)
   gap1: {gap: SPACING_UNIT * 1},
   gap2: {gap: SPACING_UNIT * 2},
