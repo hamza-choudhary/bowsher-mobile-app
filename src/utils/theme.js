@@ -3,7 +3,7 @@ import {
   MD3LightTheme as DefaultTheme,
 } from 'react-native-paper';
 
-const customFont = 'Metropolis';
+const customFont = 'Poppins';
 
 const createFontStyle = (size, weight, letterSpacing, lineHeight) => ({
   fontFamily: customFont,
