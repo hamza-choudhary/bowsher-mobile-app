@@ -1,6 +1,7 @@
 import {BOTTOM_TABS_LABELS} from '@constants';
 import {PlatformPressable} from '@react-navigation/elements';
 import {useLinkBuilder} from '@react-navigation/native';
+import {globalStyles as gs} from '@styles';
 import {isIOS} from '@utils';
 import PropTypes from 'prop-types';
 import {StyleSheet, View} from 'react-native';
@@ -67,7 +68,7 @@ export function BottomTabsList({state, descriptors, navigation}) {
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={styles.btnContainer}>
+            style={[gs.flex1, gs.pt2]}>
             {renderIcon(label, isFocused, colors)}
           </PlatformPressable>
         );
@@ -78,7 +79,7 @@ export function BottomTabsList({state, descriptors, navigation}) {
 
 function renderIcon(label, isFocused, colors) {
   const size = 25;
-  const color = isFocused ? colors.primary : colors.black;
+  const color = isFocused ? colors.primary600 : colors.black;
   let Icon;
 
   if (label === BOTTOM_TABS_LABELS.CONVERTER) {
@@ -108,13 +109,13 @@ function renderIcon(label, isFocused, colors) {
 }
 
 const styles = StyleSheet.create({
+  btnContainer: {flex: 1, paddingTop: 10},
   tabBar: {
     flexDirection: 'row',
     borderTopWidth: 0,
     elevation: 0,
     justifyContent: 'space-around',
   },
-  btnContainer: {flex: 1},
   btn: {alignItems: 'center', justifyContent: 'center', gap: 3},
   icon: {
     paddingHorizontal: 15,
