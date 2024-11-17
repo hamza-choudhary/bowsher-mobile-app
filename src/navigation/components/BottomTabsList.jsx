@@ -101,7 +101,7 @@ function renderIcon(label, isFocused, colors) {
       </View>
       <Text
         variant={isFocused ? 'labelSmall' : 'bodySmall'}
-        style={[isFocused && {color: colors.primary}]}>
+        style={[isFocused && {color: colors.primary600}]}>
         {label}
       </Text>
     </View>

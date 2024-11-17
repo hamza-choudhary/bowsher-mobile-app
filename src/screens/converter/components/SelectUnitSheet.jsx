@@ -64,7 +64,7 @@ export const SelectUnitSheet = forwardRef(function SelectUnitSheet(
       <View style={gs.flex1}>
         <View style={styles.searchContainer}>
           <Searchbar
-            placeholder="Search products"
+            placeholder="Search units"
             onChangeText={setSearchQuery}
             value={searchQuery}
             style={[
