@@ -1,42 +1,61 @@
 import {globalStyles as gs} from '@styles';
 import PropTypes from 'prop-types';
-import {useState} from 'react';
+import {useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Text} from 'react-native-paper';
+import {Text, useTheme} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //TODO: fix the fontsize text, fix colors, fix handlers logic
 
-const buttons = [
-  [
-    '7',
-    '8',
-    '9',
-    {icon: <Ionicons name="backspace-outline" size={20} />, isOperator: true},
-  ],
-  [
-    '4',
-    '5',
-    '6',
-    {icon: <Ionicons name="star-outline" size={20} />, isOperator: true},
-  ],
-  [
-    '1',
-    '2',
-    '3',
-    {icon: <MCIcon name="plus-minus" size={20} />, isOperator: true},
-  ],
-  [
-    '0',
-    '.',
-    {icon: <MCIcon name="equal" size={20} />, isOperator: true, isWide: true},
-  ],
-];
+export function InputPad() {
+  const {colors} = useTheme();
+  const buttons = useMemo(
+    () => [
+      [
+        '7',
+        '8',
+        '9',
+        {
+          icon: (
+            <Ionicons name="backspace-outline" color={colors.black} size={35} />
+          ),
+          isOperator: true,
+        },
+      ],
+      [
+        '4',
+        '5',
+        '6',
+        {
+          icon: <Ionicons name="star-outline" color={colors.black} size={30} />,
+          isOperator: true,
+        },
+      ],
+      [
+        '1',
+        '2',
+        '3',
+        {
+          icon: <MCIcon name="plus-minus" color={colors.black} size={30} />,
+          isOperator: true,
+        },
+      ],
+      [
+        '0',
+        '.',
+        {
+          icon: <MCIcon name="equal" color={colors.black} size={30} />,
+          isOperator: true,
+          isWide: true,
+        },
+      ],
+    ],
+    [colors.black],
+  );
 
-export function InputPad(params) {
   return (
-    <View style={[gs.flex1, gs.justifyEnd, {backgroundColor: 'green', gap: 1, padding: 1}]}>
+    <View style={[gs.flex1, gs.justifyEnd, styles.container]}>
       {buttons.map((row, rowIndex) => (
         <View key={`${rowIndex}-keypad-row`} style={styles.row}>
           {row.map((button, buttonIndex) => (
@@ -62,13 +81,18 @@ function InputButton({
   isOperator = false,
   icon,
 }) {
+  const {colors} = useTheme();
+
   const buttonContent = icon ? (
     icon
   ) : (
-    <Text style={[styles.buttonText, isOperator && styles.operatorText]}>
+    <Text variant="headlineMedium" style={[{color: colors.black}]}>
       {label}
     </Text>
   );
+
+  let btnColor = isOperator ? colors.padBtnOperator : colors.padBtn;
+  btnColor = isWide ? '#c7cbd1' : btnColor;
 
   return (
     <TouchableOpacity
@@ -77,8 +101,7 @@ function InputButton({
         gs.justifyCenter,
         gs.itemsCenter,
         isWide && styles.wideButton,
-        isOperator && styles.operatorButton,
-        {backgroundColor: 'brown'},
+        {backgroundColor: btnColor},
       ]}
       onPress={onPress}>
       {buttonContent}
@@ -87,11 +110,9 @@ function InputButton({
 }
 
 const styles = StyleSheet.create({
-  row: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, gap: 1},
-  wideButton: {flex: 2},
-  operatorButton: {backgroundColor: '#ff9500'},
-  buttonText: {fontSize: 24, color: '#333'},
-  operatorText: {color: '#fff'},
+  container: {gap: 2, paddingVertical: 2},
+  row: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, gap: 2},
+  wideButton: {flex: 2.01},
 });
 
 InputButton.propTypes = {
