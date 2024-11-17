@@ -8,7 +8,8 @@ import {StyleSheet, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export function BottomTabsList({state, descriptors, navigation}) {
   const insets = useSafeAreaInsets();
@@ -84,8 +85,16 @@ function renderIcon(label, isFocused, colors) {
 
   if (label === BOTTOM_TABS_LABELS.CONVERTER) {
     Icon = <AntDesign name="swap" size={size} color={color} />;
-  } else if (label === BOTTOM_TABS_LABELS.SETTINGS) {
-    Icon = <MaterialIcon name="swap-horizontal" size={size} color={color} />;
+  } else if (label === BOTTOM_TABS_LABELS.HISTORY) {
+    Icon = <MCIcon name="history" size={size} color={color} />;
+  } else if (label === BOTTOM_TABS_LABELS.EXPLORE) {
+    Icon = (
+      <Ionicons
+        name={isFocused ? 'compass-sharp' : 'compass-outline'}
+        size={size}
+        color={color}
+      />
+    );
   } else {
     return null;
   }

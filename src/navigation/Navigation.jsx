@@ -1,7 +1,7 @@
 import {BOTTOM_TABS_LABELS} from '@constants';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStaticNavigation} from '@react-navigation/native';
-import {Converter, Settings} from '@screens';
+import {Converter, Explore, History} from '@screens';
 import {BottomTabsList} from './components/BottomTabsList';
 import {ROUTES} from './routes';
 
@@ -15,9 +15,13 @@ const BottomTabs = createBottomTabNavigator({
         headerTitle: BOTTOM_TABS_LABELS.CONVERTER,
       },
     },
-    [ROUTES.SETTINGS]: {
-      screen: Settings,
-      options: {tabBarLabel: BOTTOM_TABS_LABELS.SETTINGS},
+    [ROUTES.HISTORY]: {
+      screen: History,
+      options: {tabBarLabel: BOTTOM_TABS_LABELS.HISTORY},
+    },
+    [ROUTES.EXPLORE]: {
+      screen: Explore,
+      options: {tabBarLabel: BOTTOM_TABS_LABELS.EXPLORE},
     },
   },
 });

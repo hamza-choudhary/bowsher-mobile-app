@@ -1,3 +1,3 @@
 export {Converter} from './converter/Converter';
-export {Settings} from './settings/Settings';
-export {Support} from './support/Support';
+export {Explore} from './explore/Explore';
+export {History} from './history/History';
