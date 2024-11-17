@@ -17,7 +17,7 @@ export function Converter() {
   return (
     <View style={[{backgroundColor: 'pink'}, gs.flex1]}>
       <View style={{flex: 1.5}}>
-        <InputField openSheet={openSheet} isRed />
+        <InputField openSheet={openSheet} isTo={true} />
         <InputField openSheet={openSheet} />
       </View>
       <InputPad />

@@ -1,27 +1,38 @@
 import {globalStyles as gs} from '@styles';
-import {TextInput, TouchableOpacity, View} from 'react-native';
-
 import PropTypes from 'prop-types';
-import {Text} from 'react-native-paper';
+import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
+import {Text, useTheme} from 'react-native-paper';
 
-export function InputField({isRed, openSheet}) {
+export function InputField({isTo, openSheet}) {
+  const {colors} = useTheme();
+
   const handleTextChange = text => {
-    // Allow only numbers
     const numericText = text.replace(/[^0-9]/g, '');
-    // Perform any further processing if needed
     return numericText;
   };
 
+  const backgroundColor = isTo ? colors.primary100 : colors.background;
+  const textColor = isTo ? colors.white : colors.black;
+
   return (
-    <View style={[gs.flex1, {backgroundColor: isRed ? 'orange' : 'pink'}]}>
-      <TouchableOpacity style={{backgroundColor: 'blue'}} onPress={openSheet}>
-        <Text>from</Text>
-        <Text variant="displaySmall">from</Text>
+    <View style={[gs.flex1, {backgroundColor}]}>
+      <TouchableOpacity style={[gs.p4]} onPress={openSheet}>
+        <Text style={{color: textColor}} variant="labelLarge">
+          from
+        </Text>
+        <Text style={{color: textColor}} variant="headlineMedium">
+          EUR
+        </Text>
       </TouchableOpacity>
       <TextInput
-        style={[gs.flex1, {backgroundColor: '#ccc'}]}
+        style={[
+          gs.flex1,
+          gs.p4,
+          styles.input,
+          {backgroundColor, color: textColor},
+        ]}
         multiline
-        keyboardType="number-pad" // Set number pad as the default
+        keyboardType="number-pad"
         // editable={false} // Disable keyboard input
         onPaste={event => {
           const pastedText = event.nativeEvent.text;
@@ -33,7 +44,11 @@ export function InputField({isRed, openSheet}) {
   );
 }
 
+const styles = StyleSheet.create({
+  input: {fontSize: 57, fontWeight: '200'},
+});
+
 InputField.propTypes = {
-  isRed: PropTypes.bool,
+  isTo: PropTypes.bool,
   openSheet: PropTypes.func,
 };

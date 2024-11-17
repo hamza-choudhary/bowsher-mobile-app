@@ -1,14 +1,7 @@
-import {Product, SearchNoDataFound} from '@common';
 import {globalStyles as gs} from '@styles';
 import PropTypes from 'prop-types';
 import {forwardRef, useCallback, useState} from 'react';
-import {
-  FlatList,
-  SectionList,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {SectionList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Searchbar, Text, useTheme} from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
