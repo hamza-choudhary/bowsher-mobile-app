@@ -7,7 +7,7 @@ import {StyleSheet, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import IonIcon from 'react-native-vector-icons/Ionicons';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export function BottomTabsList({state, descriptors, navigation}) {
   const insets = useSafeAreaInsets();
@@ -82,9 +82,9 @@ function renderIcon(label, isFocused, colors) {
   let Icon;
 
   if (label === BOTTOM_TABS_LABELS.CONVERTER) {
-    Icon = <IonIcon name={'cart-outline'} size={size} color={color} />;
+    Icon = <AntDesign name="swap" size={size} color={color} />;
   } else if (label === BOTTOM_TABS_LABELS.SETTINGS) {
-    Icon = <AntDesign name="hearto" size={size} color={color} />;
+    Icon = <MaterialIcon name="swap-horizontal" size={size} color={color} />;
   } else {
     return null;
   }
