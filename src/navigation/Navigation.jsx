@@ -17,13 +17,20 @@ const BottomTabs = createBottomTabNavigator({
     },
     [ROUTES.HISTORY]: {
       screen: History,
-      options: {tabBarLabel: BOTTOM_TABS_LABELS.HISTORY},
+      options: {
+        tabBarLabel: BOTTOM_TABS_LABELS.HISTORY,
+        headerTitle: BOTTOM_TABS_LABELS.HISTORY,
+      },
     },
     [ROUTES.EXPLORE]: {
       screen: Explore,
-      options: {tabBarLabel: BOTTOM_TABS_LABELS.EXPLORE},
+      options: {
+        tabBarLabel: BOTTOM_TABS_LABELS.EXPLORE,
+        headerTitle: BOTTOM_TABS_LABELS.EXPLORE,
+      },
     },
   },
+  screenOptions: {headerStyle: {backgroundColor: '#EDEDED'}},
 });
 
 export const Navigation = createStaticNavigation(BottomTabs);
