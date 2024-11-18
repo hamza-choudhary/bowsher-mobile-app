@@ -1,12 +1,11 @@
+import {UNITS} from '@constants';
 import {globalStyles as gs} from '@styles';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 
-export function InputField({isTo, openSheet, onValueChange}) {
+export function InputField({isSource = false, data, onValueChange, openSheet}) {
   const {colors} = useTheme();
-  const [value, setValue] = useState('');
 
   const validateAndSetValue = text => {
     const numericText = text.replace(/[^0-9.]/g, '');
@@ -19,8 +18,7 @@ export function InputField({isTo, openSheet, onValueChange}) {
       return;
     }
 
-    setValue(sanitizedText);
-    onValueChange?.(sanitizedText);
+    onValueChange?.(sanitizedText.toString());
   };
 
   const handlePaste = event => {
@@ -28,17 +26,17 @@ export function InputField({isTo, openSheet, onValueChange}) {
     validateAndSetValue(pastedText);
   };
 
-  const backgroundColor = isTo ? colors.primary100 : colors.background;
-  const textColor = isTo ? colors.white : colors.black;
+  const backgroundColor = isSource ? colors.primary100 : colors.background;
+  const textColor = isSource ? colors.white : colors.black;
 
   return (
     <View style={[gs.flex1, {backgroundColor}]}>
       <TouchableOpacity style={[gs.px4, gs.pt4, gs.pb1]} onPress={openSheet}>
         <Text style={{color: textColor}} variant="labelLarge">
-          {isTo ? 'to' : 'from'} kilogram
+          {isSource ? 'to' : 'from'} {data.unit}
         </Text>
         <Text style={{color: textColor}} variant="headlineMedium">
-          KG
+          {UNITS[data.unit].name}
         </Text>
       </TouchableOpacity>
       <TextInput
@@ -48,12 +46,12 @@ export function InputField({isTo, openSheet, onValueChange}) {
           styles.input,
           {backgroundColor, color: textColor},
         ]}
-        value={value}
+        value={data.value}
         multiline
         showSoftInputOnFocus={false}
         contextMenuHidden={false}
         onPaste={handlePaste}
-        selection={{start: value.length, end: value.length}}
+        selection={{start: data.value.length, end: data.value.length}}
         onChangeText={validateAndSetValue}
         textAlign="right"
       />
@@ -69,7 +67,8 @@ const styles = StyleSheet.create({
 });
 
 InputField.propTypes = {
-  isTo: PropTypes.bool,
-  openSheet: PropTypes.func,
+  isSource: PropTypes.bool,
+  data: PropTypes.object,
   onValueChange: PropTypes.func,
+  openSheet: PropTypes.func,
 };
