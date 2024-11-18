@@ -1,3 +1,4 @@
+import {UNITS} from '@constants';
 import {globalStyles as gs} from '@styles';
 import {useCallback, useRef, useState} from 'react';
 import {View} from 'react-native';
@@ -7,8 +8,8 @@ import {InputPad} from './components/InputPad';
 import {SelectUnitSheet} from './components/SelectUnitSheet';
 
 export function Converter() {
-  const [source, setSource] = useState({value: '', unit: 'kg'});
-  const [target, setTarget] = useState({value: '', unit: 'kg'});
+  const [source, setSource] = useState({value: '', unit: UNITS.kg.unit});
+  const [target, setTarget] = useState({value: '', unit: UNITS.kg.unit});
   const [currentSelectionMode, setCurrentSelectionMode] = useState(true);
   const {colors} = useTheme();
   const bottomSheetRef = useRef();
