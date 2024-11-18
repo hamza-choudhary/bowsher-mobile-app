@@ -30,7 +30,11 @@ const BottomTabs = createBottomTabNavigator({
       },
     },
   },
-  screenOptions: {headerStyle: {backgroundColor: '#EDEDED'}},
+  screenOptions: {
+    headerStyle: {backgroundColor: '#bd3b3e'},
+    headerTitleAlign: 'center',
+    headerTitleStyle: {color: '#fafafa'},
+  },
 });
 
 export const Navigation = createStaticNavigation(BottomTabs);

@@ -1,3 +1,4 @@
+import {UNITS} from '@constants';
 import {globalStyles as gs} from '@styles';
 import PropTypes from 'prop-types';
 import {forwardRef, useState} from 'react';
@@ -6,31 +7,13 @@ import {Searchbar, Text, useTheme} from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
 const unitSections = [
-  {
-    title: 'Weights',
-    data: [
-      {name: 'Kilogram', value: 'kg'},
-      {name: 'Pounds', value: 'lb'},
-    ],
-  },
-  {
-    title: 'Gas',
-    data: [
-      {name: 'Cubic Feet', value: 'scf'},
-      {name: 'Cubic Meter', value: 'nm3'},
-    ],
-  },
-  {
-    title: 'Liquid',
-    data: [
-      {name: 'Gallons', value: 'gal'},
-      {name: 'Liter', value: 'l'},
-    ],
-  },
+  {title: 'Weights', data: [UNITS.kg, UNITS.lb]},
+  {title: 'Gas', data: [UNITS.scf, UNITS.nm3]},
+  {title: 'Liquid', data: [UNITS.gal, UNITS.l]},
 ];
 
 export const SelectUnitSheet = forwardRef(function SelectUnitSheet(
-  params,
+  {onUnitSelect},
   ref,
 ) {
   const theme = useTheme();
@@ -86,7 +69,9 @@ export const SelectUnitSheet = forwardRef(function SelectUnitSheet(
           renderSectionHeader={({section: {title}}) => (
             <SectionHeader title={title} />
           )}
-          renderItem={({item}) => <ListItem item={item} />}
+          renderItem={({item}) => (
+            <ListItem item={item} onSelect={onUnitSelect} />
+          )}
           stickySectionHeadersEnabled={false}
           contentContainerStyle={styles.listContent}
         />
@@ -104,9 +89,9 @@ function SectionHeader({title}) {
   );
 }
 
-function ListItem({item}) {
+function ListItem({item, onSelect}) {
   const {colors} = useTheme();
-  const {name, value} = item;
+  const {name, unit} = item;
   return (
     <TouchableOpacity
       style={[
@@ -117,13 +102,12 @@ function ListItem({item}) {
         gs.justifyBetween,
         gs.itemsCenter,
       ]}
-      // onPress={() => onSelectUnit(item)}
-    >
+      onPress={() => onSelect(unit)}>
       <Text variant="bodyLarge" style={{color: colors.black}}>
         {name}
       </Text>
       <Text variant="bodyLarge" style={[{color: colors.black}, gs.capitalize]}>
-        {` (${value})`}
+        {` (${unit})`}
       </Text>
     </TouchableOpacity>
   );
@@ -140,9 +124,13 @@ const styles = StyleSheet.create({
   },
 });
 
+SelectUnitSheet.propTypes = {
+  onUnitSelect: PropTypes.func,
+};
 SectionHeader.propTypes = {
   title: PropTypes.string,
 };
 ListItem.propTypes = {
   item: PropTypes.object,
+  onSelect: PropTypes.func,
 };
