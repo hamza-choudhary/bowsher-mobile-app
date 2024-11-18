@@ -4,21 +4,39 @@ import PropTypes from 'prop-types';
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 
-export function InputField({isSource = false, data, onValueChange, openSheet}) {
+export function InputField({
+  isSource = false,
+  data,
+  onValueChange,
+  openSheet,
+  isActive = false,
+  onFocus,
+}) {
   const {colors} = useTheme();
 
   const validateAndSetValue = text => {
-    const numericText = text.replace(/[^0-9.]/g, '');
+    const numericText = text.replace(/[^0-9.-]/g, '');
 
-    const parts = numericText.split('.');
+    const isNegative = numericText.startsWith('-');
+    const absNumericText = numericText.replace(/-/g, '');
+
+    const parts = absNumericText.split('.');
     const sanitizedText =
-      parts.length > 2 ? `${parts[0]}.${parts.slice(1).join('')}` : numericText;
+      parts.length > 2
+        ? `${parts[0]}.${parts.slice(1).join('')}`
+        : absNumericText;
 
-    if (sanitizedText === '' || isNaN(Number(sanitizedText))) {
+    if (sanitizedText === '') {
+      onValueChange?.('0');
       return;
     }
 
-    onValueChange?.(sanitizedText.toString());
+    if (isNaN(Number(sanitizedText))) {
+      return;
+    }
+
+    const finalValue = isNegative ? `-${sanitizedText}` : sanitizedText;
+    onValueChange?.(finalValue);
   };
 
   const handlePaste = event => {
@@ -29,8 +47,13 @@ export function InputField({isSource = false, data, onValueChange, openSheet}) {
   const backgroundColor = isSource ? colors.primary100 : colors.background;
   const textColor = isSource ? colors.white : colors.black;
 
+  let borderColor = isActive ? colors.white : 'transparent';
+  if (!isSource) {
+    borderColor = isActive ? colors.primary100 : 'transparent';
+  }
+
   return (
-    <View style={[gs.flex1, {backgroundColor}]}>
+    <View style={[gs.flex1, {backgroundColor, borderColor}, styles.container]}>
       <TouchableOpacity style={[gs.px4, gs.pt4, gs.pb1]} onPress={openSheet}>
         <Text style={{color: textColor}} variant="labelLarge">
           {isSource ? 'to' : 'from'} {data.unit}
@@ -54,16 +77,15 @@ export function InputField({isSource = false, data, onValueChange, openSheet}) {
         selection={{start: data.value.length, end: data.value.length}}
         onChangeText={validateAndSetValue}
         textAlign="right"
+        onFocus={onFocus}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  input: {
-    fontSize: 45,
-    fontWeight: '200',
-  },
+  container: {borderWidth: 1},
+  input: {fontSize: 45, fontWeight: '200'},
 });
 
 InputField.propTypes = {
@@ -71,4 +93,6 @@ InputField.propTypes = {
   data: PropTypes.object,
   onValueChange: PropTypes.func,
   openSheet: PropTypes.func,
+  isActive: PropTypes.bool,
+  onFocus: PropTypes.func,
 };

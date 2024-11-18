@@ -1,14 +1,17 @@
 import {globalStyles as gs} from '@styles';
 import PropTypes from 'prop-types';
-import {useMemo, useState} from 'react';
+import {useCallback, useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-//TODO: fix the fontsize text, fix colors, fix handlers logic
+const FAVORITE = 'favorite';
+const BACKSPACE = 'backspace';
+const EQUAL = 'equal';
+const PLUS_MINUS = 'plusMinus';
 
-export function InputPad() {
+export function InputPad({onKeyPress}) {
   const {colors} = useTheme();
   const buttons = useMemo(
     () => [
@@ -21,6 +24,7 @@ export function InputPad() {
             <Ionicons name="backspace-outline" color={colors.black} size={35} />
           ),
           isOperator: true,
+          key: BACKSPACE,
         },
       ],
       [
@@ -30,6 +34,7 @@ export function InputPad() {
         {
           icon: <Ionicons name="star-outline" color={colors.black} size={30} />,
           isOperator: true,
+          key: FAVORITE,
         },
       ],
       [
@@ -39,6 +44,7 @@ export function InputPad() {
         {
           icon: <MCIcon name="plus-minus" color={colors.black} size={30} />,
           isOperator: true,
+          key: PLUS_MINUS,
         },
       ],
       [
@@ -48,26 +54,62 @@ export function InputPad() {
           icon: <MCIcon name="equal" color={colors.black} size={30} />,
           isOperator: true,
           isWide: true,
+          key: EQUAL,
         },
       ],
     ],
     [colors.black],
   );
 
+  const handleKeyPress = useCallback(
+    key => {
+      switch (key) {
+        case BACKSPACE:
+          onKeyPress(prev => prev.slice(0, -1));
+          break;
+        case PLUS_MINUS:
+          onKeyPress(prev =>
+            prev.startsWith('-') ? prev.slice(1) : `-${prev}`,
+          );
+          break;
+        case FAVORITE:
+          // Handle favorite functionality
+          break;
+        case EQUAL:
+          // Trigger conversion
+          break;
+        default:
+          onKeyPress(prev => {
+            if (key === '.' && prev.includes('.')) {
+              return prev;
+            }
+            if (prev === '0' && key !== '.') {
+              return key;
+            }
+            return prev + key;
+          });
+      }
+    },
+    [onKeyPress],
+  );
+
   return (
     <View style={[gs.flex1, gs.justifyEnd, styles.container]}>
       {buttons.map((row, rowIndex) => (
         <View key={`${rowIndex}-keypad-row`} style={styles.row}>
-          {row.map((button, buttonIndex) => (
-            <InputButton
-              key={`${buttonIndex}-keypad-btn`}
-              label={typeof button === 'string' ? button : ''}
-              icon={typeof button === 'object' ? button.icon : undefined}
-              onPress={() => {}}
-              isWide={typeof button === 'object' && button.isWide}
-              isOperator={typeof button === 'object' && button.isOperator}
-            />
-          ))}
+          {row.map((button, buttonIndex) => {
+            const buttonKey = typeof button === 'object' ? button.key : button;
+            return (
+              <InputButton
+                key={`${buttonIndex}-keypad-btn`}
+                label={typeof button === 'string' ? button : ''}
+                icon={typeof button === 'object' ? button.icon : undefined}
+                onPress={() => handleKeyPress(buttonKey)}
+                isWide={typeof button === 'object' && button.isWide}
+                isOperator={typeof button === 'object' && button.isOperator}
+              />
+            );
+          })}
         </View>
       ))}
     </View>
@@ -115,6 +157,9 @@ const styles = StyleSheet.create({
   wideButton: {flex: 2.01},
 });
 
+InputPad.propTypes = {
+  onKeyPress: PropTypes.func,
+};
 InputButton.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
   onPress: PropTypes.func,
