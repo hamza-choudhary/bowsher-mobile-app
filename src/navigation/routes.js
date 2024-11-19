@@ -1,6 +1,6 @@
 export const ROUTES = {
   CONVERTER: 'ConverterScreen',
   HISTORY: 'HistoryScreen',
-  EXPLORE: 'ExploreScreen',
+  HOME: 'HomeScreen',
   ABOUT_US: 'AboutUsScreen',
 };

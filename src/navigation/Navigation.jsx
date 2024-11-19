@@ -1,13 +1,20 @@
 import {BOTTOM_TABS_LABELS} from '@constants';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStaticNavigation} from '@react-navigation/native';
-import {Converter, Explore, History} from '@screens';
+import {Converter, History, Home} from '@screens';
 import {BottomTabsList} from './components/BottomTabsList';
 import {ROUTES} from './routes';
 
 const BottomTabs = createBottomTabNavigator({
   tabBar: props => <BottomTabsList {...props} />,
   screens: {
+    [ROUTES.HOME]: {
+      screen: Home,
+      options: {
+        tabBarLabel: BOTTOM_TABS_LABELS.HOME,
+        headerTitle: BOTTOM_TABS_LABELS.HOME,
+      },
+    },
     [ROUTES.CONVERTER]: {
       screen: Converter,
       options: {
@@ -20,13 +27,6 @@ const BottomTabs = createBottomTabNavigator({
       options: {
         tabBarLabel: BOTTOM_TABS_LABELS.HISTORY,
         headerTitle: BOTTOM_TABS_LABELS.HISTORY,
-      },
-    },
-    [ROUTES.EXPLORE]: {
-      screen: Explore,
-      options: {
-        tabBarLabel: BOTTOM_TABS_LABELS.EXPLORE,
-        headerTitle: BOTTOM_TABS_LABELS.EXPLORE,
       },
     },
   },
