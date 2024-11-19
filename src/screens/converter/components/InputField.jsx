@@ -1,17 +1,14 @@
 import {UNITS} from '@constants';
 import {globalStyles as gs} from '@styles';
 import PropTypes from 'prop-types';
+import {forwardRef} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 
-export function InputField({
-  isSource = false,
-  data,
-  onValueChange,
-  openSheet,
-  isActive = false,
-  onFocus,
-}) {
+export const InputField = forwardRef(function InputField(
+  {isSource = false, data, onValueChange, openSheet, isActive = false, onFocus},
+  ref,
+) {
   const {colors} = useTheme();
 
   const validateAndSetValue = text => {
@@ -69,6 +66,7 @@ export function InputField({
           styles.input,
           {backgroundColor, color: textColor},
         ]}
+        ref={ref}
         value={data.value}
         multiline
         showSoftInputOnFocus={false}
@@ -81,7 +79,7 @@ export function InputField({
       />
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {borderWidth: 1},

@@ -1,6 +1,6 @@
 import {UNITS} from '@constants';
 import {globalStyles as gs} from '@styles';
-import {useCallback, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {View} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import {converter} from 'utils/converter';
@@ -16,6 +16,8 @@ export function Converter() {
   const [activeField, setActiveField] = useState(FIELD.SOURCE);
   const {colors} = useTheme();
   const bottomSheetRef = useRef();
+  const sourceRef = useRef();
+  const targetRef = useRef();
 
   const performConversion = useCallback(
     (fromField, newSourceValue, newSourceUnit, newTargetUnit) => {
@@ -86,6 +88,11 @@ export function Converter() {
 
   const openSheet = useCallback(field => {
     setActiveField(field);
+    if (field === FIELD.SOURCE) {
+      sourceRef.current.focus();
+    } else {
+      targetRef.current.focus();
+    }
     bottomSheetRef.current?.open();
   }, []);
 
@@ -101,10 +108,15 @@ export function Converter() {
     [activeField, handleValueChange, source.value, target.value],
   );
 
+  useEffect(() => {
+    sourceRef.current.focus();
+  }, []);
+
   return (
     <View style={[gs.flex1, {backgroundColor: colors.background}]}>
       <View style={{flex: 1.5}}>
         <InputField
+          ref={sourceRef}
           isSource
           data={source}
           isActive={activeField === FIELD.SOURCE}
@@ -113,6 +125,7 @@ export function Converter() {
           openSheet={() => openSheet(FIELD.SOURCE)}
         />
         <InputField
+          ref={targetRef}
           data={target}
           isActive={activeField === FIELD.TARGET}
           onFocus={() => handleFieldFocus(FIELD.TARGET)}
