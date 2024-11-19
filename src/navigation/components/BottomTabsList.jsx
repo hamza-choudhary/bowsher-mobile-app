@@ -8,6 +8,7 @@ import {StyleSheet, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -61,6 +62,7 @@ export function BottomTabsList({state, descriptors, navigation}) {
 
         return (
           <PlatformPressable
+            android_ripple={{radius: 1}}
             key={route.key}
             href={buildHref(route.name, route.params)}
             accessibilityRole="button"
@@ -87,14 +89,8 @@ function renderIcon(label, isFocused, colors) {
     Icon = <AntDesign name="swap" size={size} color={color} />;
   } else if (label === BOTTOM_TABS_LABELS.HISTORY) {
     Icon = <MCIcon name="history" size={size} color={color} />;
-  } else if (label === BOTTOM_TABS_LABELS.EXPLORE) {
-    Icon = (
-      <Ionicons
-        name={isFocused ? 'compass-sharp' : 'compass-outline'}
-        size={size}
-        color={color}
-      />
-    );
+  } else if (label === BOTTOM_TABS_LABELS.HOME) {
+    Icon = <Entypo name="home" size={size} color={color} />;
   } else {
     return null;
   }
