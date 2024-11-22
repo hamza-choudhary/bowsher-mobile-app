@@ -24,6 +24,11 @@ export const InputField = forwardRef(function InputField(
     bottomSheetRef.current?.open();
   }, []);
 
+  function uniSelectHandler(unit) {
+    bottomSheetRef.current?.close();
+    onUnitSelect(unit);
+  }
+
   const backgroundColor = isSource ? colors.primary100 : colors.background;
   const textColor = isSource ? colors.white : colors.black;
 
@@ -55,12 +60,12 @@ export const InputField = forwardRef(function InputField(
         showSoftInputOnFocus={false}
         contextMenuHidden={false}
         onPaste={handlePaste}
-        selection={{start: value.value.length, end: value.value.length}}
+        selection={{start: value.value?.length, end: value.value?.length}}
         //onChangeText={validateAndSetValue} //!there is no need for that
         textAlign="right"
         onFocus={onFocus}
       />
-      <SelectUnitSheet ref={bottomSheetRef} onUnitSelect={onUnitSelect} />
+      <SelectUnitSheet ref={bottomSheetRef} onUnitSelect={uniSelectHandler} />
     </View>
   );
 });
