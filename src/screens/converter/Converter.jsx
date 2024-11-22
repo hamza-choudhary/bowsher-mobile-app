@@ -97,7 +97,7 @@ export function Converter() {
 
   return (
     <View style={[gs.flex1, {backgroundColor: colors.background}]}>
-      <View style={{flex: 1.5}}>
+      <View style={{flex: 0.8}}>
         <InputField
           ref={sourceRef}
           isSource

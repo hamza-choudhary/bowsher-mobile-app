@@ -1,3 +1,4 @@
+export {HEIGHT, WIDTH} from './general';
 export {
   deleteItemFromLocalStorage,
   getItemFromLocalStorage,
