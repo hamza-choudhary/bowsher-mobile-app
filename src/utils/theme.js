@@ -39,7 +39,7 @@ export const themeConfig = {
   fonts: configureFonts({config: fontConfig}),
   colors: {
     ...DefaultTheme.colors,
-    primary: '#2B2D42',
+    primary: '#87181a',
     primary100: '#bd3b3e',
     primary200: '#b23436',
     primary300: '#a72d2f',

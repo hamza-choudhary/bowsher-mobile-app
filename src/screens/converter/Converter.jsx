@@ -6,107 +6,90 @@ import {useTheme} from 'react-native-paper';
 import {converter} from 'utils/converter';
 import {InputField} from './components/InputField';
 import {InputPad} from './components/InputPad';
-import {SelectUnitSheet} from './components/SelectUnitSheet';
 
 const FIELD = {SOURCE: 'source', TARGET: 'target'};
 
 export function Converter() {
-  const [source, setSource] = useState({value: '', unit: UNITS.kg.unit});
-  const [target, setTarget] = useState({value: '', unit: UNITS.kg.unit});
+  //? add ts for better suggestions and use [] syntax
+  const [conversion, setConversion] = useState({
+    source: {value: '0', unit: UNITS.kg.unit},
+    target: {value: '0', unit: UNITS.kg.unit},
+  });
   const [activeField, setActiveField] = useState(FIELD.SOURCE);
   const {colors} = useTheme();
-  const bottomSheetRef = useRef();
   const sourceRef = useRef();
   const targetRef = useRef();
-
-  const performConversion = useCallback(
-    (fromField, newSourceValue, newSourceUnit, newTargetUnit) => {
-      try {
-        const currentSourceValue = newSourceValue ?? source.value;
-        const currentSourceUnit = newSourceUnit ?? source.unit;
-        const currentTargetUnit = newTargetUnit ?? target.unit;
-
-        const inputValue = Number(currentSourceValue) || 0;
-        const result = converter({
-          input: inputValue,
-          from: currentSourceUnit,
-          to: currentTargetUnit,
-        });
-
-        if (fromField === FIELD.SOURCE) {
-          setTarget(prev => ({...prev, value: result.toString()}));
-        } else {
-          setSource(prev => ({...prev, value: result.toString()}));
-        }
-      } catch (error) {
-        console.error('Conversion error:', error);
-      }
-    },
-    [source, target.unit],
-  );
-
-  const handleUnitSelection = useCallback(
-    selectedUnit => {
-      if (activeField === FIELD.SOURCE) {
-        setSource(prev => ({...prev, unit: selectedUnit}));
-        performConversion(
-          FIELD.SOURCE,
-          source.value,
-          selectedUnit,
-          target.unit,
-        );
-      } else {
-        setTarget(prev => ({...prev, unit: selectedUnit}));
-        performConversion(
-          FIELD.TARGET,
-          target.value,
-          target.unit,
-          selectedUnit,
-        );
-      }
-      bottomSheetRef.current?.close();
-    },
-    [activeField, performConversion, source.value, target],
-  );
-
-  const handleValueChange = useCallback(
-    (field, value) => {
-      if (field === FIELD.SOURCE) {
-        setSource(prev => ({...prev, value: value}));
-        performConversion(FIELD.SOURCE, value);
-        return;
-      }
-      setTarget(prev => ({...prev, value: value}));
-      performConversion(FIELD.TARGET, value);
-    },
-    [performConversion],
-  );
 
   const handleFieldFocus = useCallback(field => {
     setActiveField(field);
   }, []);
 
-  const openSheet = useCallback(field => {
-    setActiveField(field);
-    if (field === FIELD.SOURCE) {
-      sourceRef.current.focus();
-    } else {
-      targetRef.current.focus();
-    }
-    bottomSheetRef.current?.open();
-  }, []);
+  function handleUnitSelection(field, unit) {
+    setConversion(p => ({...p, [field]: {...p[field], unit}}));
 
-  const handleKeyPress = useCallback(
-    valueUpdater => {
-      const currentField = activeField;
-      const currentValue =
-        currentField === FIELD.SOURCE ? source.value : target.value;
-      const newValue = valueUpdater(currentValue);
+    //? perform conversion
+    const sourceField = activeField;
+    const targetField =
+      activeField === FIELD.SOURCE ? FIELD.TARGET : FIELD.SOURCE;
 
-      handleValueChange(currentField, newValue);
+    const sourceValue = conversion[sourceField].value;
+
+    const sourceUnit =
+      field === sourceField ? unit : conversion[sourceField].unit;
+    const targetUnit =
+      field === targetField ? unit : conversion[targetField].unit;
+
+    const result = converter({
+      to: targetUnit,
+      from: sourceUnit,
+      input: sourceValue,
+    });
+
+    // console.log(
+    //   `to: ${targetUnit}, from: ${sourceUnit}, input: ${sourceValue}`,
+    // );
+
+    setConversion(p => ({
+      ...p,
+      [targetField]: {...p[targetField], value: result},
+    }));
+  }
+
+  const handlePaste = useCallback(
+    (field, value) => {
+      //TODO: validate
+      const validatedValue = value;
+      setConversion(p => ({
+        ...p,
+        [field]: {...p[field], value: validatedValue},
+      }));
+      handleFieldFocus(field);
     },
-    [activeField, handleValueChange, source.value, target.value],
+    [handleFieldFocus],
   );
+
+  function handleKeyPress(onChange) {
+    const conversionValue = conversion[activeField];
+    const updatedSourceValue = onChange(conversionValue.value);
+    setConversion(p => ({
+      ...p,
+      [activeField]: {...p[activeField], value: updatedSourceValue},
+    }));
+    //? perform conversion
+    const {unit: sourceUnit} = conversion[activeField];
+    const targetField =
+      activeField === FIELD.SOURCE ? FIELD.TARGET : FIELD.SOURCE;
+    const {unit: targetUnit} = conversion[targetField];
+    const result = converter({
+      to: targetUnit,
+      from: sourceUnit,
+      input: updatedSourceValue,
+    });
+    setConversion(p => ({
+      ...p,
+      [targetField]: {...p[targetField], value: result},
+    }));
+  }
 
   useEffect(() => {
     sourceRef.current.focus();
@@ -118,26 +101,22 @@ export function Converter() {
         <InputField
           ref={sourceRef}
           isSource
-          data={source}
-          isActive={activeField === FIELD.SOURCE}
+          isActive
+          value={conversion.source}
+          onUnitSelect={unit => handleUnitSelection(FIELD.SOURCE, unit)}
           onFocus={() => handleFieldFocus(FIELD.SOURCE)}
-          onValueChange={value => handleValueChange(FIELD.SOURCE, value)}
-          openSheet={() => openSheet(FIELD.SOURCE)}
+          onPaste={value => handlePaste(FIELD.SOURCE, value)}
         />
         <InputField
           ref={targetRef}
-          data={target}
-          isActive={activeField === FIELD.TARGET}
+          isActive
+          value={conversion.target}
+          onUnitSelect={unit => handleUnitSelection(FIELD.TARGET, unit)}
           onFocus={() => handleFieldFocus(FIELD.TARGET)}
-          onValueChange={value => handleValueChange(FIELD.TARGET, value)}
-          openSheet={() => openSheet(FIELD.TARGET)}
+          onPaste={value => handlePaste(FIELD.TARGET, value)}
         />
       </View>
       <InputPad onKeyPress={handleKeyPress} />
-      <SelectUnitSheet
-        ref={bottomSheetRef}
-        onUnitSelect={handleUnitSelection}
-      />
     </View>
   );
 }
