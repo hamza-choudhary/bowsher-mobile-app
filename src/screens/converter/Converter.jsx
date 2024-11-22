@@ -11,6 +11,11 @@ import {SelectUnitSheet} from './components/SelectUnitSheet';
 const FIELD = {SOURCE: 'source', TARGET: 'target'};
 
 export function Converter() {
+  //? add ts for better suggestions and use [] syntax
+  const [conversion, setConversion] = useState({
+    source: {value: '', unit: UNITS.kg.unit},
+    target: {value: '', unit: UNITS.kg.unit},
+  });
   const [source, setSource] = useState({value: '', unit: UNITS.kg.unit});
   const [target, setTarget] = useState({value: '', unit: UNITS.kg.unit});
   const [activeField, setActiveField] = useState(FIELD.SOURCE);
@@ -86,16 +91,6 @@ export function Converter() {
     setActiveField(field);
   }, []);
 
-  const openSheet = useCallback(field => {
-    setActiveField(field);
-    if (field === FIELD.SOURCE) {
-      sourceRef.current.focus();
-    } else {
-      targetRef.current.focus();
-    }
-    bottomSheetRef.current?.open();
-  }, []);
-
   const handleKeyPress = useCallback(
     valueUpdater => {
       const currentField = activeField;
@@ -112,25 +107,41 @@ export function Converter() {
     sourceRef.current.focus();
   }, []);
 
+  function handleUnitSelection(field, unit) {
+    setConversion(p => ({...p, [field]: {...[p.field], unit}}));
+    //TODO: perfom calculation
+  }
+
+  function handlePaste(field, value) {
+    //TODO: validate
+    const validatedValue = value;
+    setConversion(p => ({
+      ...p,
+      [field]: {...[p.field], value: validatedValue},
+    }));
+    //! set activation
+    handleFieldFocus(field);
+  }
+
   return (
     <View style={[gs.flex1, {backgroundColor: colors.background}]}>
       <View style={{flex: 1.5}}>
         <InputField
           ref={sourceRef}
           isSource
-          data={source}
-          isActive={activeField === FIELD.SOURCE}
+          isActive
+          value={conversion.source}
+          onUnitSelect={unit => handleUnitSelection(FIELD.SOURCE, unit)}
           onFocus={() => handleFieldFocus(FIELD.SOURCE)}
-          onValueChange={value => handleValueChange(FIELD.SOURCE, value)}
-          openSheet={() => openSheet(FIELD.SOURCE)}
+          onPaste={value => handlePaste(FIELD.SOURCE, value)}
         />
         <InputField
           ref={targetRef}
-          data={target}
-          isActive={activeField === FIELD.TARGET}
+          isActive
+          value={conversion.target}
+          onUnitSelect={unit => handleUnitSelection(FIELD.TARGET, unit)}
           onFocus={() => handleFieldFocus(FIELD.TARGET)}
-          onValueChange={value => handleValueChange(FIELD.TARGET, value)}
-          openSheet={() => openSheet(FIELD.TARGET)}
+          onPaste={value => handlePaste(FIELD.TARGET, value)}
         />
       </View>
       <InputPad onKeyPress={handleKeyPress} />

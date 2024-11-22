@@ -1,45 +1,28 @@
 import {UNITS} from '@constants';
+import {validateConverterPaste} from '@helpers';
 import {globalStyles as gs} from '@styles';
 import PropTypes from 'prop-types';
-import {forwardRef} from 'react';
+import {forwardRef, useCallback, useRef} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
+import {SelectUnitSheet} from './SelectUnitSheet';
 
 export const InputField = forwardRef(function InputField(
-  {isSource = false, data, onValueChange, openSheet, isActive = false, onFocus},
+  {isSource = false, isActive, value, onUnitSelect, onFocus, onPaste},
   ref,
 ) {
+  const bottomSheetRef = useRef();
   const {colors} = useTheme();
-
-  const validateAndSetValue = text => {
-    const numericText = text.replace(/[^0-9.-]/g, '');
-
-    const isNegative = numericText.startsWith('-');
-    const absNumericText = numericText.replace(/-/g, '');
-
-    const parts = absNumericText.split('.');
-    const sanitizedText =
-      parts.length > 2
-        ? `${parts[0]}.${parts.slice(1).join('')}`
-        : absNumericText;
-
-    if (sanitizedText === '') {
-      onValueChange?.('0');
-      return;
-    }
-
-    if (isNaN(Number(sanitizedText))) {
-      return;
-    }
-
-    const finalValue = isNegative ? `-${sanitizedText}` : sanitizedText;
-    onValueChange?.(finalValue);
-  };
 
   const handlePaste = event => {
     const pastedText = event.nativeEvent.text;
-    validateAndSetValue(pastedText);
+    const validatedValue = validateConverterPaste(pastedText);
+    onPaste(validatedValue);
   };
+
+  const openSheet = useCallback(() => {
+    bottomSheetRef.current?.open();
+  }, []);
 
   const backgroundColor = isSource ? colors.primary100 : colors.background;
   const textColor = isSource ? colors.white : colors.black;
@@ -53,10 +36,10 @@ export const InputField = forwardRef(function InputField(
     <View style={[gs.flex1, {backgroundColor, borderColor}, styles.container]}>
       <TouchableOpacity style={[gs.px4, gs.pt4, gs.pb1]} onPress={openSheet}>
         <Text style={{color: textColor}} variant="labelLarge">
-          {isSource ? 'to' : 'from'} {data.unit}
+          {isSource ? 'to' : 'from'} {value.unit}
         </Text>
         <Text style={{color: textColor}} variant="headlineMedium">
-          {UNITS[data.unit].name}
+          {UNITS[value.unit].name}
         </Text>
       </TouchableOpacity>
       <TextInput
@@ -67,16 +50,17 @@ export const InputField = forwardRef(function InputField(
           {backgroundColor, color: textColor},
         ]}
         ref={ref}
-        value={data.value}
+        value={value.value}
         multiline
         showSoftInputOnFocus={false}
         contextMenuHidden={false}
         onPaste={handlePaste}
-        selection={{start: data.value.length, end: data.value.length}}
-        onChangeText={validateAndSetValue}
+        selection={{start: value.value.length, end: value.value.length}}
+        //onChangeText={validateAndSetValue} //!there is no need for that
         textAlign="right"
         onFocus={onFocus}
       />
+      <SelectUnitSheet ref={bottomSheetRef} onUnitSelect={onUnitSelect} />
     </View>
   );
 });
@@ -88,9 +72,9 @@ const styles = StyleSheet.create({
 
 InputField.propTypes = {
   isSource: PropTypes.bool,
-  data: PropTypes.object,
-  onValueChange: PropTypes.func,
-  openSheet: PropTypes.func,
-  isActive: PropTypes.bool,
-  onFocus: PropTypes.func,
+  isActive: PropTypes.bool.isRequired,
+  value: PropTypes.object.isRequired,
+  onUnitSelect: PropTypes.func.isRequired,
+  onFocus: PropTypes.func.isRequired,
+  onPaste: PropTypes.func.isRequired,
 };
