@@ -1659,6 +1659,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNInAppBrowser (3.7.0):
+    - React-Core
   - RNReanimated (3.16.1):
     - DoubleConversion
     - glog
@@ -1885,6 +1887,7 @@ DEPENDENCIES:
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNInAppBrowser (from `../node_modules/react-native-inappbrowser-reborn`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -2030,6 +2033,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNInAppBrowser:
+    :path: "../node_modules/react-native-inappbrowser-reborn"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -2107,6 +2112,7 @@ SPEC CHECKSUMS:
   RNBootSplash: 2f3d6c7dd96a2f145b96bd741ce8e170714e0514
   RNCAsyncStorage: 2edc69cf6db9299363a11477668b7f452f2cb4a6
   RNGestureHandler: 0ce27051bfc8d735ffebcb0bfa1a67d7d90958d7
+  RNInAppBrowser: 6d3eb68d471b9834335c664704719b8be1bfdb20
   RNReanimated: e01050e272623a49aba628de3dfd2b539b8cc4c6
   RNScreens: 1b1282f5fd21119667bb361d736d4edaca3c35e0
   RNVectorIcons: a24016b773380b1aa37fca501ec6b94a951890a0

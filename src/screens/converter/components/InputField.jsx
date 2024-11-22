@@ -41,12 +41,12 @@ export const InputField = forwardRef(function InputField(
     validateAndSetValue(pastedText);
   };
 
-  const backgroundColor = isSource ? colors.primary100 : colors.background;
+  const backgroundColor = isSource ? colors.primary600 : colors.background;
   const textColor = isSource ? colors.white : colors.black;
 
   let borderColor = isActive ? colors.white : 'transparent';
   if (!isSource) {
-    borderColor = isActive ? colors.primary100 : 'transparent';
+    borderColor = isActive ? colors.primary600 : 'transparent';
   }
 
   return (

@@ -18,6 +18,7 @@
     "react-native": "0.76.1",
     "react-native-bootsplash": "^6.2.6",
     "react-native-gesture-handler": "^2.20.2",
+    "react-native-inappbrowser-reborn": "^3.7.0",
     "react-native-paper": "^5.12.5",
     "react-native-raw-bottom-sheet": "^3.0.0",
     "react-native-reanimated": "^3.16.1",

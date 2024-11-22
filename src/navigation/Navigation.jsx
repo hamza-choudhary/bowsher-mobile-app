@@ -31,7 +31,7 @@ const BottomTabs = createBottomTabNavigator({
     },
   },
   screenOptions: {
-    headerStyle: {backgroundColor: '#bd3b3e'},
+    headerStyle: {backgroundColor: '#87181a'},
     headerTitleAlign: 'center',
     headerTitleStyle: {color: '#fafafa'},
   },
