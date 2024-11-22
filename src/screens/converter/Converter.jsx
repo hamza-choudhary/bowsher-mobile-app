@@ -101,7 +101,7 @@ export function Converter() {
         <InputField
           ref={sourceRef}
           isSource
-          isActive
+          isActive={activeField === FIELD.SOURCE}
           value={conversion.source}
           onUnitSelect={unit => handleUnitSelection(FIELD.SOURCE, unit)}
           onFocus={() => handleFieldFocus(FIELD.SOURCE)}
@@ -109,7 +109,7 @@ export function Converter() {
         />
         <InputField
           ref={targetRef}
-          isActive
+          isActive={activeField === FIELD.TARGET}
           value={conversion.target}
           onUnitSelect={unit => handleUnitSelection(FIELD.TARGET, unit)}
           onFocus={() => handleFieldFocus(FIELD.TARGET)}
