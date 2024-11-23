@@ -54,7 +54,7 @@ export const themeConfig = {
     review: '#FFBA49',
     white: '#fafafa',
     white100: '#F5F5F5',
-    textSecondary: '#9B9B9B',
+    textSecondary: '#8e8d91',
     lightGrey: '#e8e8e8',
     grey: '#9B9B9B',
     toasterRed: '#D84A49',

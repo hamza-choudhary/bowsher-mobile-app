@@ -44,8 +44,8 @@ export const InputField = forwardRef(function InputField(
         style={[
           gs.flex1,
           gs.overflowHidden,
-          gs.border1,
-          {borderColor, backgroundColor},
+          // gs.border1,
+          // {borderColor, backgroundColor},
         ]}>
         <TouchableOpacity style={gs.flex1} onPress={onFocus}>
           <View style={[gs.flex1, gs.flexRow]}>

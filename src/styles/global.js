@@ -17,6 +17,7 @@ export const globalStyles = StyleSheet.create({
   overflowVisible: {overflow: 'visible'},
 
   //border
+  borderThin: {borderWidth: StyleSheet.hairlineWidth},
   border1: {borderWidth: 1},
   border2: {borderWidth: 2},
   border3: {borderWidth: 3},
