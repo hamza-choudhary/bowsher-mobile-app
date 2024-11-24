@@ -23,7 +23,7 @@ export function InputPad({onKeyPress}) {
         '9',
         {
           icon: (
-            <Ionicons name="backspace-outline" color={colors.black} size={35} />
+            <Ionicons name="backspace-outline" color={colors.white} size={35} />
           ),
           isOperator: true,
           key: BACKSPACE,
@@ -34,7 +34,7 @@ export function InputPad({onKeyPress}) {
         '5',
         '6',
         {
-          icon: <Ionicons name="star-outline" color={colors.black} size={30} />,
+          icon: <Ionicons name="star-outline" color={colors.white} size={30} />,
           isOperator: true,
           key: FAVORITE,
         },
@@ -44,7 +44,7 @@ export function InputPad({onKeyPress}) {
         '2',
         '3',
         {
-          icon: <MCIcon name="plus-minus" color={colors.black} size={30} />,
+          icon: <MCIcon name="plus-minus" color={colors.white} size={30} />,
           isOperator: true,
           key: PLUS_MINUS,
         },
@@ -54,14 +54,14 @@ export function InputPad({onKeyPress}) {
         '.',
         'X',
         {
-          icon: <MCIcon name="equal" color={colors.black} size={30} />,
+          icon: <MCIcon name="equal" color={colors.white} size={30} />,
           isOperator: true,
           isWide: true,
           key: EQUAL,
         },
       ],
     ],
-    [colors.black],
+    [colors],
   );
 
   const handleKeyPress = useCallback(
@@ -131,13 +131,12 @@ function InputButton({
   const buttonContent = icon ? (
     icon
   ) : (
-    <Text variant="headlineMedium" style={[{color: colors.black}]}>
+    <Text variant="headlineMedium" style={[{color: colors.white}]}>
       {label}
     </Text>
   );
 
-  let btnColor = isOperator ? colors.padBtnOperator : colors.padBtn;
-  btnColor = isWide ? '#c7cbd1' : btnColor;
+  let btnColor = isOperator ? colors.primary300 : colors.primary;
 
   return (
     <TouchableOpacity
@@ -145,7 +144,6 @@ function InputButton({
         gs.justifyCenter,
         gs.itemsCenter,
         gs.roundedFull,
-        isWide && styles.wideButton,
         {backgroundColor: btnColor, width: BUTTON_WIDTH, height: BUTTON_WIDTH},
       ]}
       onPress={onPress}>

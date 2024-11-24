@@ -45,10 +45,6 @@ export function Converter() {
       input: sourceValue,
     });
 
-    // console.log(
-    //   `to: ${targetUnit}, from: ${sourceUnit}, input: ${sourceValue}`,
-    // );
-
     setConversion(p => ({
       ...p,
       [targetField]: {...p[targetField], value: result},
@@ -97,7 +93,7 @@ export function Converter() {
 
   return (
     <View style={[gs.flex1, {backgroundColor: colors.background}]}>
-      <View style={{flex: 0.8}}>
+      <View style={[styles.inputContainer]}>
         <InputField
           ref={sourceRef}
           isSource
@@ -107,20 +103,20 @@ export function Converter() {
           onFocus={() => handleFieldFocus(FIELD.SOURCE)}
           onPaste={value => handlePaste(FIELD.SOURCE, value)}
         />
-        <View style={[gs.justifyCenter]}>
+        <View style={[gs.justifyCenter, gs.z50]}>
+          <IconButton
+            onPress={() => console.log('hello swap')}
+            icon="swap-vertical"
+            size={32}
+            iconColor={colors.black}
+            style={[gs.absolute, gs.selfStart, gs.left0]}
+          />
           <View
             style={[
               gs.borderThin,
               styles.dividerLine,
               {borderColor: colors.padBtnOperator},
             ]}
-          />
-          <IconButton
-            onPress={() => console.log('hello swap')}
-            icon="swap-vertical"
-            size={32}
-            iconColor={colors.primary}
-            style={[gs.absolute, gs.selfStart]}
           />
         </View>
         <InputField
@@ -138,6 +134,6 @@ export function Converter() {
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 0.8},
-  dividerLine: {marginLeft: 50, marginRight: 20},
+  inputContainer: {flex: 0.8},
+  dividerLine: {marginLeft: 50},
 });

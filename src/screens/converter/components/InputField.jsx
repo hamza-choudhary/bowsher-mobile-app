@@ -1,4 +1,3 @@
-import {UNITS} from '@constants';
 import {validateConverterPaste} from '@helpers';
 import {globalStyles as gs} from '@styles';
 import {fontFamily, WIDTH} from '@utils';
@@ -6,6 +5,7 @@ import PropTypes from 'prop-types';
 import {forwardRef, useCallback, useRef} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SelectUnitSheet} from './SelectUnitSheet';
 
 export const InputField = forwardRef(function InputField(
@@ -30,24 +30,13 @@ export const InputField = forwardRef(function InputField(
     onUnitSelect(unit);
   }
 
-  const backgroundColor = isSource ? colors.primary100 : colors.background;
-  const textColor = isSource ? colors.white : colors.black;
 
-  let borderColor = isActive ? colors.white : 'transparent';
-  if (!isSource) {
-    borderColor = isActive ? colors.primary100 : 'transparent';
-  }
+  const textColor = isActive ? colors.black : colors.textSecondary;
 
   return (
     <>
-      <View
-        style={[
-          gs.flex1,
-          gs.overflowHidden,
-          // gs.border1,
-          // {borderColor, backgroundColor},
-        ]}>
-        <TouchableOpacity style={gs.flex1} onPress={onFocus}>
+      <View style={[gs.flex1, gs.overflowHidden]}>
+        <TouchableOpacity style={[gs.flex1, gs.px5]} onPress={onFocus}>
           <View style={[gs.flex1, gs.flexRow]}>
             <TextInput
               style={[
@@ -69,22 +58,30 @@ export const InputField = forwardRef(function InputField(
             />
             <TouchableOpacity
               style={[
-                gs.justifyCenter,
-                gs.p2,
+                gs.py2,
                 gs.hFull,
                 isSource ? gs.justifyEnd : gs.justifyStart,
-                {backgroundColor: 'orange', width: WIDTH / 6},
+                {width: WIDTH / 6 + 5},
               ]}
               onPress={openSheet}>
-              <Text
+              <View
                 style={[
-                  gs.uppercase,
+                  gs.justifyEnd,
+                  gs.flexRow,
+                  gs.itemsCenter,
                   !isSource && styles.btnText,
-                  {color: textColor},
-                ]}
-                variant="titleLarge">
-                {value.unit}
-              </Text>
+                ]}>
+                <Text
+                  style={[gs.uppercase, {color: colors.textSecondary}]}
+                  variant="titleLarge">
+                  {value.unit}
+                </Text>
+                <Ionicons
+                  color={colors.textSecondary}
+                  size={25}
+                  name="chevron-expand"
+                />
+              </View>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>

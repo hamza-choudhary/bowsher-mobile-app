@@ -16,6 +16,15 @@ export const globalStyles = StyleSheet.create({
   overflowScroll: {overflow: 'scroll'},
   overflowVisible: {overflow: 'visible'},
 
+  //positions
+  top0: {top: 0},
+  left0: {left: 0},
+  right0: {right: 0},
+  bottom0: {bottom: 0},
+
+  //z-index
+  z50: {zIndex: 50},
+
   //border
   borderThin: {borderWidth: StyleSheet.hairlineWidth},
   border1: {borderWidth: 1},

@@ -19,7 +19,7 @@ export function converter({input, from, to}) {
     // throw new Error(`Unable to convert from ${from} to ${to}`);
   }
   const result = inputNo * fromConversions[to];
-  return (result);
+  return result.toString();
 }
 //FIXME: Large no issue
 function formatLargeNumber(num) {
