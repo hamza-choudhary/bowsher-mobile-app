@@ -5,6 +5,12 @@ export const TOASTER = {
   INFO: 'Info',
 };
 
+export const GASES = {
+  NITROGEN: '',
+  CARBON_DIOXIDE: '',
+  O2: '',
+};
+
 export const UNITS = {
   kg: {unit: 'kg', name: 'Kilogram'},
   lb: {unit: 'lb', name: 'Pounds'},

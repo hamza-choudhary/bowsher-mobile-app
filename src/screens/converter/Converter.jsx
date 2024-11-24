@@ -10,6 +10,7 @@ import {InputPad} from './components/InputPad';
 const FIELD = {SOURCE: 'source', TARGET: 'target'};
 
 export function Converter() {
+  const [gas, selectGas] = useState();
   //? add ts for better suggestions and use [] syntax
   const [conversion, setConversion] = useState({
     source: {value: '0', unit: UNITS.kg.unit},
@@ -92,7 +93,7 @@ export function Converter() {
   }, []);
 
   return (
-    <View style={[gs.flex1, {backgroundColor: colors.background}]}>
+    <View style={[gs.flex1, {backgroundColor: colors.white}]}>
       <View style={[styles.inputContainer]}>
         <InputField
           ref={sourceRef}
