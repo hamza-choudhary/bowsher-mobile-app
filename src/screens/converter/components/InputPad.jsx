@@ -1,4 +1,5 @@
 import {globalStyles as gs} from '@styles';
+import {WIDTH} from '@utils';
 import PropTypes from 'prop-types';
 import {useCallback, useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
@@ -10,6 +11,7 @@ const FAVORITE = 'favorite';
 const BACKSPACE = 'backspace';
 const EQUAL = 'equal';
 const PLUS_MINUS = 'plusMinus';
+const BUTTON_WIDTH = WIDTH / 4 - 15; // - 4 gap
 
 export function InputPad({onKeyPress}) {
   const {colors} = useTheme();
@@ -21,7 +23,7 @@ export function InputPad({onKeyPress}) {
         '9',
         {
           icon: (
-            <Ionicons name="backspace-outline" color={colors.black} size={35} />
+            <Ionicons name="backspace-outline" color={colors.white} size={35} />
           ),
           isOperator: true,
           key: BACKSPACE,
@@ -32,7 +34,7 @@ export function InputPad({onKeyPress}) {
         '5',
         '6',
         {
-          icon: <Ionicons name="star-outline" color={colors.black} size={30} />,
+          icon: <Ionicons name="star-outline" color={colors.white} size={30} />,
           isOperator: true,
           key: FAVORITE,
         },
@@ -42,7 +44,7 @@ export function InputPad({onKeyPress}) {
         '2',
         '3',
         {
-          icon: <MCIcon name="plus-minus" color={colors.black} size={30} />,
+          icon: <MCIcon name="plus-minus" color={colors.white} size={30} />,
           isOperator: true,
           key: PLUS_MINUS,
         },
@@ -50,15 +52,16 @@ export function InputPad({onKeyPress}) {
       [
         '0',
         '.',
+        'X',
         {
-          icon: <MCIcon name="equal" color={colors.black} size={30} />,
+          icon: <MCIcon name="equal" color={colors.white} size={30} />,
           isOperator: true,
           isWide: true,
           key: EQUAL,
         },
       ],
     ],
-    [colors.black],
+    [colors],
   );
 
   const handleKeyPress = useCallback(
@@ -94,7 +97,7 @@ export function InputPad({onKeyPress}) {
   );
 
   return (
-    <View style={[gs.flex1, gs.justifyEnd, styles.container]}>
+    <View style={[gs.flex1, styles.container]}>
       {buttons.map((row, rowIndex) => (
         <View key={`${rowIndex}-keypad-row`} style={styles.row}>
           {row.map((button, buttonIndex) => {
@@ -128,22 +131,20 @@ function InputButton({
   const buttonContent = icon ? (
     icon
   ) : (
-    <Text variant="headlineMedium" style={[{color: colors.black}]}>
+    <Text variant="headlineMedium" style={[{color: colors.white}]}>
       {label}
     </Text>
   );
 
-  let btnColor = isOperator ? colors.padBtnOperator : colors.padBtn;
-  btnColor = isWide ? '#c7cbd1' : btnColor;
+  let btnColor = isOperator ? colors.primary300 : colors.primary;
 
   return (
     <TouchableOpacity
       style={[
-        gs.flex1,
         gs.justifyCenter,
         gs.itemsCenter,
-        isWide && styles.wideButton,
-        {backgroundColor: btnColor},
+        gs.roundedFull,
+        {backgroundColor: btnColor, width: BUTTON_WIDTH, height: BUTTON_WIDTH},
       ]}
       onPress={onPress}>
       {buttonContent}
@@ -152,9 +153,14 @@ function InputButton({
 }
 
 const styles = StyleSheet.create({
-  container: {gap: 2, paddingVertical: 2},
-  row: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, gap: 2},
-  wideButton: {flex: 2.01},
+  container: {
+    gap: 7,
+    paddingVertical: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  row: {flexDirection: 'row', gap: 7},
+  wideButton: {width: BUTTON_WIDTH * 2, height: BUTTON_WIDTH},
 });
 
 InputPad.propTypes = {

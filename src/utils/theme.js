@@ -3,10 +3,10 @@ import {
   MD3LightTheme as DefaultTheme,
 } from 'react-native-paper';
 
-const customFont = 'Poppins';
+export const fontFamily = 'Poppins';
 
 const createFontStyle = (size, weight, letterSpacing, lineHeight) => ({
-  fontFamily: customFont,
+  fontFamily: fontFamily,
   fontSize: size,
   fontWeight: weight,
   letterSpacing,
@@ -29,7 +29,7 @@ const fontConfig = {
   bodySmall: createFontStyle(11, '400', 0.4, 16),
   bodyMedium: createFontStyle(14, '400', 0.25, 20),
   bodyLarge: createFontStyle(16, '400', 0.15, 24),
-  default: {fontFamily: customFont, fontWeight: '400', letterSpacing: 0},
+  default: {fontFamily: fontFamily, fontWeight: '400', letterSpacing: 0},
 };
 
 export const themeConfig = {
@@ -53,6 +53,7 @@ export const themeConfig = {
     red: '#DB3022',
     review: '#FFBA49',
     white: '#fafafa',
+    whiteWithOpacity: 'rgba(255, 255, 255, 0.3)',
     white100: '#F5F5F5',
     textSecondary: '#9B9B9B',
     lightGrey: '#e8e8e8',

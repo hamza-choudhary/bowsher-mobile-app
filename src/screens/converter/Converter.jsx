@@ -1,8 +1,8 @@
 import {UNITS} from '@constants';
 import {globalStyles as gs} from '@styles';
 import {useCallback, useEffect, useRef, useState} from 'react';
-import {View} from 'react-native';
-import {useTheme} from 'react-native-paper';
+import {StyleSheet, View} from 'react-native';
+import {IconButton, useTheme} from 'react-native-paper';
 import {converter} from 'utils/converter';
 import {InputField} from './components/InputField';
 import {InputPad} from './components/InputPad';
@@ -44,10 +44,6 @@ export function Converter() {
       from: sourceUnit,
       input: sourceValue,
     });
-
-    // console.log(
-    //   `to: ${targetUnit}, from: ${sourceUnit}, input: ${sourceValue}`,
-    // );
 
     setConversion(p => ({
       ...p,
@@ -97,7 +93,7 @@ export function Converter() {
 
   return (
     <View style={[gs.flex1, {backgroundColor: colors.background}]}>
-      <View style={{flex: 1.5}}>
+      <View style={[styles.inputContainer]}>
         <InputField
           ref={sourceRef}
           isSource
@@ -107,6 +103,22 @@ export function Converter() {
           onFocus={() => handleFieldFocus(FIELD.SOURCE)}
           onPaste={value => handlePaste(FIELD.SOURCE, value)}
         />
+        <View style={[gs.justifyCenter, gs.z50]}>
+          <IconButton
+            onPress={() => console.log('hello swap')}
+            icon="swap-vertical"
+            size={32}
+            iconColor={colors.black}
+            style={[gs.absolute, gs.selfStart, gs.left0]}
+          />
+          <View
+            style={[
+              gs.borderThin,
+              styles.dividerLine,
+              {borderColor: colors.padBtnOperator},
+            ]}
+          />
+        </View>
         <InputField
           ref={targetRef}
           isActive={activeField === FIELD.TARGET}
@@ -120,3 +132,8 @@ export function Converter() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  inputContainer: {flex: 0.8},
+  dividerLine: {marginLeft: 50},
+});
