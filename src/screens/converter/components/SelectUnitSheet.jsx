@@ -7,9 +7,9 @@ import {Searchbar, Text, useTheme} from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
 const unitSections = [
-  {title: 'Weights', data: [UNITS.kg, UNITS.lb]},
-  {title: 'Gas', data: [UNITS.scf, UNITS.nm3]},
-  {title: 'Liquid', data: [UNITS.gal, UNITS.l]},
+  {title: 'Weights', data: [UNITS?.kg, UNITS?.lb]},
+  {title: 'Gas', data: [UNITS?.scf, UNITS?.nm3]},
+  {title: 'Liquid', data: [UNITS?.gal, UNITS?.l]},
 ];
 
 export const SelectUnitSheet = forwardRef(function SelectUnitSheet(
@@ -23,8 +23,8 @@ export const SelectUnitSheet = forwardRef(function SelectUnitSheet(
   const filteredSections = unitSections
     .map(section => ({
       ...section,
-      data: section.data.filter(unit =>
-        unit.name.toLowerCase().includes(searchQuery.toLowerCase()),
+      data: section?.data.filter(unit =>
+        unit?.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()),
       ),
     }))
     .filter(section => section.data.length > 0);
