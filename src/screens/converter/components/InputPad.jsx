@@ -11,9 +11,10 @@ const FAVORITE = 'favorite';
 const BACKSPACE = 'backspace';
 const EQUAL = 'equal';
 const PLUS_MINUS = 'plusMinus';
+const SELECT_GAS = 'selectGas';
 const BUTTON_WIDTH = WIDTH / 4 - 15; // - 4 gap
 
-export function InputPad({onKeyPress}) {
+export function InputPad({onKeyPress, gas, openGasSelectSheet}) {
   const {colors} = useTheme();
   const buttons = useMemo(
     () => [
@@ -29,10 +30,11 @@ export function InputPad({onKeyPress}) {
           key: BACKSPACE,
         },
       ],
+      ['4', '5', '6', {key: SELECT_GAS, label: gas}],
       [
-        '4',
-        '5',
-        '6',
+        '1',
+        '2',
+        '3',
         {
           icon: <Ionicons name="star-outline" color={colors.white} size={30} />,
           isOperator: true,
@@ -40,19 +42,13 @@ export function InputPad({onKeyPress}) {
         },
       ],
       [
-        '1',
-        '2',
-        '3',
+        '0',
+        '.',
         {
           icon: <MCIcon name="plus-minus" color={colors.white} size={30} />,
           isOperator: true,
           key: PLUS_MINUS,
         },
-      ],
-      [
-        '0',
-        '.',
-        'X',
         {
           icon: <MCIcon name="equal" color={colors.white} size={30} />,
           isOperator: true,
@@ -61,7 +57,7 @@ export function InputPad({onKeyPress}) {
         },
       ],
     ],
-    [colors],
+    [colors, gas],
   );
 
   const handleKeyPress = useCallback(
@@ -81,6 +77,9 @@ export function InputPad({onKeyPress}) {
         case EQUAL:
           // Trigger conversion
           break;
+        case SELECT_GAS:
+          openGasSelectSheet();
+          break;
         default:
           onKeyPress(prev => {
             if (key === '.' && prev.includes('.')) {
@@ -93,7 +92,7 @@ export function InputPad({onKeyPress}) {
           });
       }
     },
-    [onKeyPress],
+    [onKeyPress, openGasSelectSheet],
   );
 
   return (
@@ -105,11 +104,11 @@ export function InputPad({onKeyPress}) {
             return (
               <InputButton
                 key={`${buttonIndex}-keypad-btn`}
-                label={typeof button === 'string' ? button : ''}
+                label={typeof button === 'string' ? button : button?.label}
                 icon={typeof button === 'object' ? button.icon : undefined}
                 onPress={() => handleKeyPress(buttonKey)}
-                isWide={typeof button === 'object' && button.isWide}
                 isOperator={typeof button === 'object' && button.isOperator}
+                isSelect={button.key === SELECT_GAS}
               />
             );
           })}
@@ -122,21 +121,23 @@ export function InputPad({onKeyPress}) {
 function InputButton({
   label,
   onPress = () => {},
-  isWide = false,
   isOperator = false,
   icon,
+  isSelect = false,
 }) {
   const {colors} = useTheme();
 
   const buttonContent = icon ? (
     icon
   ) : (
-    <Text variant="headlineMedium" style={[{color: colors.white}]}>
+    <Text
+      variant={isSelect ? 'headlineSmall' : 'headlineMedium'}
+      style={[{color: colors.white}, gs.uppercase]}>
       {label}
     </Text>
   );
 
-  let btnColor = isOperator ? colors.primary300 : colors.primary;
+  const btnColor = isOperator || isSelect ? colors.primary300 : colors.primary;
 
   return (
     <TouchableOpacity
@@ -165,11 +166,13 @@ const styles = StyleSheet.create({
 
 InputPad.propTypes = {
   onKeyPress: PropTypes.func,
+  gas: PropTypes.string,
+  openGasSelectSheet: PropTypes.func,
 };
 InputButton.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
   onPress: PropTypes.func,
-  isWide: PropTypes.bool,
   isOperator: PropTypes.bool,
   icon: PropTypes.element,
+  isSelect: PropTypes.bool,
 };

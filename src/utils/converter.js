@@ -1,4 +1,5 @@
 import {nitrogenConversionsDirect} from '@constants';
+import {GASES} from 'constants/keys';
 
 export function converter({input, from, to}) {
   const inputNo = Number(input);
@@ -37,4 +38,8 @@ function formatLargeNumber(num) {
 
   numStr = numStr.replace(/\.?0+$/, '');
   return numStr;
+}
+
+export function getAllGases() {
+  return Object.values(GASES).map(gas => ({name: gas.name, unit: gas.unit}));
 }

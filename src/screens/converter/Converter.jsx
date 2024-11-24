@@ -1,28 +1,40 @@
 import {UNITS} from '@constants';
 import {globalStyles as gs} from '@styles';
+import {GASES} from 'constants/keys';
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {IconButton, useTheme} from 'react-native-paper';
 import {converter} from 'utils/converter';
 import {InputField} from './components/InputField';
 import {InputPad} from './components/InputPad';
+import {SelectGasSheet} from './components/SelectGasSheet';
 
 const FIELD = {SOURCE: 'source', TARGET: 'target'};
 
 export function Converter() {
-  const [gas, selectGas] = useState();
+  const [gas, setGas] = useState(GASES.n.unit);
   //? add ts for better suggestions and use [] syntax
   const [conversion, setConversion] = useState({
-    source: {value: '0', unit: UNITS.kg.unit},
-    target: {value: '0', unit: UNITS.kg.unit},
+    source: {value: '0', unit: UNITS?.kg?.unit},
+    target: {value: '0', unit: UNITS?.kg?.unit},
   });
   const [activeField, setActiveField] = useState(FIELD.SOURCE);
   const {colors} = useTheme();
   const sourceRef = useRef();
   const targetRef = useRef();
+  const bottomSheetRef = useRef();
 
   const handleFieldFocus = useCallback(field => {
     setActiveField(field);
+  }, []);
+
+  const handleOpenSheet = useCallback(() => {
+    bottomSheetRef.current.open();
+  }, []);
+
+  const handleSelectGas = useCallback(gasUnit => {
+    setGas(gasUnit);
+    bottomSheetRef.current.close();
   }, []);
 
   function handleUnitSelection(field, unit) {
@@ -129,7 +141,12 @@ export function Converter() {
           onPaste={value => handlePaste(FIELD.TARGET, value)}
         />
       </View>
-      <InputPad onKeyPress={handleKeyPress} />
+      <InputPad
+        gas={gas}
+        onKeyPress={handleKeyPress}
+        openGasSelectSheet={handleOpenSheet}
+      />
+      <SelectGasSheet ref={bottomSheetRef} onGasSelect={handleSelectGas} />
     </View>
   );
 }
