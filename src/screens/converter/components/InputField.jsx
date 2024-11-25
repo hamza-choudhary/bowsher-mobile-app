@@ -9,7 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SelectUnitSheet} from './SelectUnitSheet';
 
 export const InputField = forwardRef(function InputField(
-  {isSource = false, isActive, value, onUnitSelect, onFocus, onPaste},
+  {isSource = false, isActive, value, onUnitSelect, onFocus, onPaste, gas},
   ref,
 ) {
   const bottomSheetRef = useRef();
@@ -29,7 +29,6 @@ export const InputField = forwardRef(function InputField(
     bottomSheetRef.current?.close();
     onUnitSelect(unit);
   }
-
 
   const textColor = isActive ? colors.black : colors.textSecondary;
 
@@ -86,7 +85,11 @@ export const InputField = forwardRef(function InputField(
           </View>
         </TouchableOpacity>
       </View>
-      <SelectUnitSheet ref={bottomSheetRef} onUnitSelect={uniSelectHandler} />
+      <SelectUnitSheet
+        ref={bottomSheetRef}
+        onUnitSelect={uniSelectHandler}
+        gas={gas}
+      />
     </>
   );
 });
@@ -103,4 +106,5 @@ InputField.propTypes = {
   onUnitSelect: PropTypes.func.isRequired,
   onFocus: PropTypes.func.isRequired,
   onPaste: PropTypes.func.isRequired,
+  gas: PropTypes.string,
 };

@@ -7,112 +7,109 @@ import {Text, useTheme} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const FAVORITE = 'favorite';
-const BACKSPACE = 'backspace';
-const EQUAL = 'equal';
-const PLUS_MINUS = 'plusMinus';
 const BUTTON_WIDTH = WIDTH / 4 - 15; // - 4 gap
+const BUTTON_TYPES = {
+  BACKSPACE: 'backspace',
+  FAVORITE: 'favorite',
+  EQUAL: 'equal',
+  PLUS_MINUS: 'plusMinus',
+  SELECT_GAS: 'selectGas',
+};
 
-export function InputPad({onKeyPress}) {
+const createButtonConfig = (colors, gas) => [
+  [
+    {label: '7'},
+    {label: '8'},
+    {label: '9'},
+    {
+      icon: (
+        <Ionicons name="backspace-outline" color={colors.white} size={35} />
+      ),
+      id: BUTTON_TYPES.BACKSPACE,
+      hasPrimaryBackground: false,
+    },
+  ],
+  [
+    {label: '4'},
+    {label: '5'},
+    {label: '6'},
+    {label: gas, id: BUTTON_TYPES.SELECT_GAS, hasPrimaryBackground: false},
+  ],
+  [
+    {label: '1'},
+    {label: '2'},
+    {label: '3'},
+    {
+      icon: <Ionicons name="star-outline" color={colors.white} size={30} />,
+      id: BUTTON_TYPES.FAVORITE,
+      hasPrimaryBackground: false,
+    },
+  ],
+  [
+    {label: '0'},
+    {label: '.'},
+    {
+      icon: <MCIcon name="plus-minus" color={colors.white} size={30} />,
+      id: BUTTON_TYPES.PLUS_MINUS,
+      hasPrimaryBackground: true,
+    },
+    {
+      icon: <MCIcon name="equal" color={colors.white} size={30} />,
+      id: BUTTON_TYPES.EQUAL,
+      hasPrimaryBackground: false,
+    },
+  ],
+];
+
+export function InputPad({onKeyPress, gas, openGasSelectSheet}) {
   const {colors} = useTheme();
-  const buttons = useMemo(
-    () => [
-      [
-        '7',
-        '8',
-        '9',
-        {
-          icon: (
-            <Ionicons name="backspace-outline" color={colors.white} size={35} />
-          ),
-          isOperator: true,
-          key: BACKSPACE,
-        },
-      ],
-      [
-        '4',
-        '5',
-        '6',
-        {
-          icon: <Ionicons name="star-outline" color={colors.white} size={30} />,
-          isOperator: true,
-          key: FAVORITE,
-        },
-      ],
-      [
-        '1',
-        '2',
-        '3',
-        {
-          icon: <MCIcon name="plus-minus" color={colors.white} size={30} />,
-          isOperator: true,
-          key: PLUS_MINUS,
-        },
-      ],
-      [
-        '0',
-        '.',
-        'X',
-        {
-          icon: <MCIcon name="equal" color={colors.white} size={30} />,
-          isOperator: true,
-          isWide: true,
-          key: EQUAL,
-        },
-      ],
-    ],
-    [colors],
-  );
+
+  const buttons = useMemo(() => createButtonConfig(colors, gas), [colors, gas]);
 
   const handleKeyPress = useCallback(
     key => {
+      console.log(key);
       switch (key) {
-        case BACKSPACE:
+        case BUTTON_TYPES.BACKSPACE:
           onKeyPress(prev => prev.slice(0, -1));
           break;
-        case PLUS_MINUS:
+        case BUTTON_TYPES.PLUS_MINUS:
           onKeyPress(prev =>
             prev.startsWith('-') ? prev.slice(1) : `-${prev}`,
           );
           break;
-        case FAVORITE:
+        case BUTTON_TYPES.FAVORITE:
           // Handle favorite functionality
           break;
-        case EQUAL:
-          // Trigger conversion
+        case BUTTON_TYPES.EQUAL:
+          // Handle equal functionality
+          break;
+        case BUTTON_TYPES.SELECT_GAS:
+          openGasSelectSheet();
           break;
         default:
           onKeyPress(prev => {
             if (key === '.' && prev.includes('.')) {
               return prev;
             }
-            if (prev === '0' && key !== '.') {
-              return key;
-            }
-            return prev + key;
+            return prev === '0' && key !== '.' ? key : prev + key;
           });
       }
     },
-    [onKeyPress],
+    [onKeyPress, openGasSelectSheet],
   );
 
   return (
     <View style={[gs.flex1, styles.container]}>
       {buttons.map((row, rowIndex) => (
-        <View key={`${rowIndex}-keypad-row`} style={styles.row}>
-          {row.map((button, buttonIndex) => {
-            const buttonKey = typeof button === 'object' ? button.key : button;
-            return (
-              <InputButton
-                key={`${buttonIndex}-keypad-btn`}
-                label={typeof button === 'string' ? button : ''}
-                icon={typeof button === 'object' ? button.icon : undefined}
-                onPress={() => handleKeyPress(buttonKey)}
-                isWide={typeof button === 'object' && button.isWide}
-                isOperator={typeof button === 'object' && button.isOperator}
-              />
-            );
-          })}
+        <View key={`row-${rowIndex}`} style={styles.row}>
+          {row.map((button, buttonIndex) => (
+            <InputButton
+              key={`button-${rowIndex}-${buttonIndex}`}
+              {...button}
+              onPress={() => handleKeyPress(button.id || button.label)}
+            />
+          ))}
         </View>
       ))}
     </View>
@@ -121,22 +118,23 @@ export function InputPad({onKeyPress}) {
 
 function InputButton({
   label,
-  onPress = () => {},
-  isWide = false,
-  isOperator = false,
   icon,
+  onPress,
+  hasPrimaryBackground = true,
+  isSelect = false,
 }) {
   const {colors} = useTheme();
 
-  const buttonContent = icon ? (
-    icon
-  ) : (
-    <Text variant="headlineMedium" style={[{color: colors.white}]}>
+  const buttonContent = icon || (
+    <Text
+      variant={isSelect ? 'headlineSmall' : 'headlineMedium'}
+      style={[gs.uppercase, {color: colors.white}]}>
       {label}
     </Text>
   );
 
-  let btnColor = isOperator ? colors.primary300 : colors.primary;
+  const backgroundColor =
+    hasPrimaryBackground || isSelect ? colors.primary : colors.primary300;
 
   return (
     <TouchableOpacity
@@ -144,7 +142,7 @@ function InputButton({
         gs.justifyCenter,
         gs.itemsCenter,
         gs.roundedFull,
-        {backgroundColor: btnColor, width: BUTTON_WIDTH, height: BUTTON_WIDTH},
+        {backgroundColor, width: BUTTON_WIDTH, height: BUTTON_WIDTH},
       ]}
       onPress={onPress}>
       {buttonContent}
@@ -160,16 +158,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   row: {flexDirection: 'row', gap: 7},
-  wideButton: {width: BUTTON_WIDTH * 2, height: BUTTON_WIDTH},
 });
 
 InputPad.propTypes = {
   onKeyPress: PropTypes.func,
+  gas: PropTypes.string,
+  openGasSelectSheet: PropTypes.func,
 };
 InputButton.propTypes = {
-  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   onPress: PropTypes.func,
-  isWide: PropTypes.bool,
-  isOperator: PropTypes.bool,
+  hasPrimaryBackground: PropTypes.bool,
   icon: PropTypes.element,
+  isSelect: PropTypes.bool,
 };

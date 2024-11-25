@@ -1,28 +1,47 @@
-import {nitrogenConversionsDirect} from '@constants';
+import {GASES} from '@constants';
 
-export function converter({input, from, to}) {
+/**
+ * Converts a value from one unit to another for a specified gas.
+ *
+ * @param {Object} params - The conversion parameters.
+ * @param {string|number} params.input - The value to be converted.
+ * @param {string} params.from - The unit to convert from.
+ * @param {string} params.to - The unit to convert to.
+ * @param {string} params.gas - The gas type (e.g., 'n', 'co2').
+ * @returns {string|undefined} The converted value as a string, or undefined if conversion is not possible.
+ */
+export function converter({input, from, to, gas}) {
   const inputNo = Number(input);
   if (isNaN(inputNo)) {
-    //FIXME: hanlde toast
+    console.warn('Invalid input: must be a number');
     return;
-    // throw new Error('Input must be a valid number');
   }
 
   if (from === to) {
     return inputNo.toString();
   }
 
-  const fromConversions = nitrogenConversionsDirect[from];
-  if (!fromConversions || !fromConversions[to]) {
+  const gasData = GASES[gas];
+  if (!gasData) {
+    console.warn(`Invalid gas type: ${gas}`);
     return;
-    //FIXME: handle toast
-    // throw new Error(`Unable to convert from ${from} to ${to}`);
   }
-  const result = inputNo * fromConversions[to];
+
+  const conversionRates = gasData.conversionRates[from];
+  if (!conversionRates || !conversionRates[to]) {
+    console.warn(
+      `Conversion not supported from ${from} to ${to} for gas ${gas}`,
+    );
+    return;
+  }
+
+  const conversionFactor = conversionRates[to];
+  const result = inputNo * conversionFactor;
   return result.toString();
 }
+
 //FIXME: Large no issue
-function formatLargeNumber(num) {
+export function formatLargeNumber(num) {
   let numStr = String(num);
   if (numStr.includes('e')) {
     let [coefficient, exponent] = numStr.split('e');
@@ -37,4 +56,8 @@ function formatLargeNumber(num) {
 
   numStr = numStr.replace(/\.?0+$/, '');
   return numStr;
+}
+
+export function getAllGases() {
+  return Object.values(GASES).map(gas => ({name: gas.name, unit: gas.unit}));
 }

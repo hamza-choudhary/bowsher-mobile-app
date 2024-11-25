@@ -1,4 +1,6 @@
+export {converter, getAllGases} from './converter';
 export {HEIGHT, WIDTH} from './general';
+export {resolveImageSource} from './image';
 export {
   deleteItemFromLocalStorage,
   getItemFromLocalStorage,
