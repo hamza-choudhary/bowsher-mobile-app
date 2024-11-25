@@ -1,33 +1,40 @@
-import {UNITS} from '@constants';
+import {GASES} from '@constants';
 import {globalStyles as gs} from '@styles';
 import PropTypes from 'prop-types';
-import {forwardRef, useState} from 'react';
+import {forwardRef, useMemo, useState} from 'react';
 import {SectionList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Searchbar, Text, useTheme} from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
-const unitSections = [
-  {title: 'Weights', data: [UNITS?.kg, UNITS?.lb]},
-  {title: 'Gas', data: [UNITS?.scf, UNITS?.nm3]},
-  {title: 'Liquid', data: [UNITS?.gal, UNITS?.l]},
-];
-
 export const SelectUnitSheet = forwardRef(function SelectUnitSheet(
-  {onUnitSelect},
+  {onUnitSelect, gas},
   ref,
 ) {
   const theme = useTheme();
   const {colors} = theme;
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredSections = unitSections
-    .map(section => ({
-      ...section,
-      data: section?.data.filter(unit =>
-        unit?.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()),
-      ),
-    }))
-    .filter(section => section.data.length > 0);
+  const filteredData = useMemo(() => {
+    const allSections = GASES[gas].unitList;
+    if (!searchQuery.trim()) {
+      return allSections;
+    }
+    const query = searchQuery.toLowerCase();
+    return allSections
+      .map(section => {
+        const filteredItems = section.data.filter(
+          item =>
+            item.name.toLowerCase().includes(query) ||
+            item.unit.toLowerCase().includes(query) ||
+            section.title.toLowerCase().includes(query),
+        );
+        if (filteredItems.length > 0) {
+          return {...section, data: filteredItems};
+        }
+        return null;
+      })
+      .filter(Boolean);
+  }, [gas, searchQuery]);
 
   return (
     <RBSheet
@@ -64,7 +71,7 @@ export const SelectUnitSheet = forwardRef(function SelectUnitSheet(
           />
         </View>
         <SectionList
-          sections={filteredSections}
+          sections={filteredData}
           keyExtractor={(item, index) => item.name + index}
           renderSectionHeader={({section: {title}}) => (
             <SectionHeader title={title} />
@@ -126,6 +133,7 @@ const styles = StyleSheet.create({
 
 SelectUnitSheet.propTypes = {
   onUnitSelect: PropTypes.func,
+  gas: PropTypes.string,
 };
 SectionHeader.propTypes = {
   title: PropTypes.string,

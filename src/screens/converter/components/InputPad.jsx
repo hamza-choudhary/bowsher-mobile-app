@@ -25,7 +25,7 @@ const createButtonConfig = (colors, gas) => [
       icon: (
         <Ionicons name="backspace-outline" color={colors.white} size={35} />
       ),
-      key: BUTTON_TYPES.BACKSPACE,
+      id: BUTTON_TYPES.BACKSPACE,
       hasPrimaryBackground: false,
     },
   ],
@@ -33,7 +33,7 @@ const createButtonConfig = (colors, gas) => [
     {label: '4'},
     {label: '5'},
     {label: '6'},
-    {label: gas, key: BUTTON_TYPES.SELECT_GAS, hasPrimaryBackground: false},
+    {label: gas, id: BUTTON_TYPES.SELECT_GAS, hasPrimaryBackground: false},
   ],
   [
     {label: '1'},
@@ -41,7 +41,7 @@ const createButtonConfig = (colors, gas) => [
     {label: '3'},
     {
       icon: <Ionicons name="star-outline" color={colors.white} size={30} />,
-      key: BUTTON_TYPES.FAVORITE,
+      id: BUTTON_TYPES.FAVORITE,
       hasPrimaryBackground: false,
     },
   ],
@@ -50,12 +50,12 @@ const createButtonConfig = (colors, gas) => [
     {label: '.'},
     {
       icon: <MCIcon name="plus-minus" color={colors.white} size={30} />,
-      key: BUTTON_TYPES.PLUS_MINUS,
+      id: BUTTON_TYPES.PLUS_MINUS,
       hasPrimaryBackground: true,
     },
     {
       icon: <MCIcon name="equal" color={colors.white} size={30} />,
-      key: BUTTON_TYPES.EQUAL,
+      id: BUTTON_TYPES.EQUAL,
       hasPrimaryBackground: false,
     },
   ],
@@ -68,6 +68,7 @@ export function InputPad({onKeyPress, gas, openGasSelectSheet}) {
 
   const handleKeyPress = useCallback(
     key => {
+      console.log(key);
       switch (key) {
         case BUTTON_TYPES.BACKSPACE:
           onKeyPress(prev => prev.slice(0, -1));
@@ -106,7 +107,7 @@ export function InputPad({onKeyPress, gas, openGasSelectSheet}) {
             <InputButton
               key={`button-${rowIndex}-${buttonIndex}`}
               {...button}
-              onPress={() => handleKeyPress(button.key || button.label)}
+              onPress={() => handleKeyPress(button.id || button.label)}
             />
           ))}
         </View>
@@ -165,7 +166,7 @@ InputPad.propTypes = {
   openGasSelectSheet: PropTypes.func,
 };
 InputButton.propTypes = {
-  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   onPress: PropTypes.func,
   hasPrimaryBackground: PropTypes.bool,
   icon: PropTypes.element,

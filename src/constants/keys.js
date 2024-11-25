@@ -5,6 +5,16 @@ export const TOASTER = {
   INFO: 'Info',
 };
 
+//it should contain all units
+export const UNITS = {
+  kg: {unit: 'kg', name: 'Kilogram'},
+  lb: {unit: 'lb', name: 'Pounds'},
+  scf: {unit: 'scf', name: 'Cubic Feet'},
+  nm3: {unit: 'nm3', name: 'Cubic Meter'},
+  gal: {unit: 'gal', name: 'Gallons'},
+  l: {unit: 'l', name: 'Liter'},
+};
+
 export const GASES = {
   n: {
     unit: 'n',
@@ -17,6 +27,11 @@ export const GASES = {
       gal: {lb: 6.7522, kg: 3.0656, scf: 93.1099, nm3: 2.451, l: 3.785},
       l: {lb: 1.7838, kg: 0.8098, scf: 24.6002, nm3: 0.6475, gal: 0.2642},
     },
+    unitList: [
+      {title: 'Weights', data: [UNITS.kg, UNITS.lb]},
+      {title: 'Gas', data: [UNITS.scf, UNITS.nm3]},
+      {title: 'Liquid', data: [UNITS.gal, UNITS.l]},
+    ],
   },
   co2: {
     unit: 'co2',
@@ -29,6 +44,11 @@ export const GASES = {
       gal: {lb: 6.7522, kg: 3.0656, scf: 93.1099, nm3: 2.451, l: 3.785},
       l: {lb: 1.7838, kg: 0.8098, scf: 24.6002, nm3: 0.6475, gal: 0.2642},
     },
+    unitList: [
+      {title: 'Weights', data: [UNITS.kg, UNITS.lb]},
+      {title: 'Gas', data: [UNITS.scf, UNITS.nm3]},
+      {title: 'Liquid', data: [UNITS.gal, UNITS.l]},
+    ],
   },
   he: {
     unit: 'he',
@@ -41,6 +61,11 @@ export const GASES = {
       gal: {lb: 6.7522, kg: 3.0656, scf: 93.1099, nm3: 2.451, l: 3.785},
       l: {lb: 1.7838, kg: 0.8098, scf: 24.6002, nm3: 0.6475, gal: 0.2642},
     },
+    unitList: [
+      {title: 'Weights', data: [UNITS.kg, UNITS.lb]},
+      {title: 'Gas', data: [UNITS.scf, UNITS.nm3]},
+      {title: 'Liquid', data: [UNITS.gal, UNITS.l]},
+    ],
   },
   h2: {
     unit: 'h2',
@@ -53,6 +78,11 @@ export const GASES = {
       gal: {lb: 6.7522, kg: 3.0656, scf: 93.1099, nm3: 2.451, l: 3.785},
       l: {lb: 1.7838, kg: 0.8098, scf: 24.6002, nm3: 0.6475, gal: 0.2642},
     },
+    unitList: [
+      {title: 'Weights', data: [UNITS.kg, UNITS.lb]},
+      {title: 'Gas', data: [UNITS.scf, UNITS.nm3]},
+      {title: 'Liquid', data: [UNITS.gal, UNITS.l]},
+    ],
   },
   o2: {
     unit: 'o2',
@@ -65,6 +95,11 @@ export const GASES = {
       gal: {lb: 6.7522, kg: 3.0656, scf: 93.1099, nm3: 2.451, l: 3.785},
       l: {lb: 1.7838, kg: 0.8098, scf: 24.6002, nm3: 0.6475, gal: 0.2642},
     },
+    unitList: [
+      {title: 'Weights', data: [UNITS.kg, UNITS.lb]},
+      {title: 'Gas', data: [UNITS.scf, UNITS.nm3]},
+      {title: 'Liquid', data: [UNITS.gal, UNITS.l]},
+    ],
   },
   lng: {
     unit: 'lng',
@@ -77,14 +112,10 @@ export const GASES = {
       gal: {lb: 6.7522, kg: 3.0656, scf: 93.1099, nm3: 2.451, l: 3.785},
       l: {lb: 1.7838, kg: 0.8098, scf: 24.6002, nm3: 0.6475, gal: 0.2642},
     },
+    unitList: [
+      {title: 'Weights', data: [UNITS.kg, UNITS.lb]},
+      {title: 'Gas', data: [UNITS.scf, UNITS.nm3]},
+      {title: 'Liquid', data: [UNITS.gal, UNITS.l]},
+    ],
   },
-};
-
-export const CONVERSION_UNITS = {
-  kg: {unit: 'kg', name: 'Kilogram'},
-  lb: {unit: 'lb', name: 'Pounds'},
-  scf: {unit: 'scf', name: 'Cubic Feet'},
-  nm3: {unit: 'nm3', name: 'Cubic Meter'},
-  gal: {unit: 'gal', name: 'Gallons'},
-  l: {unit: 'l', name: 'Liter'},
 };

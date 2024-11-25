@@ -1,4 +1,3 @@
-import {UNITS} from '@constants';
 import {globalStyles as gs} from '@styles';
 import {GASES} from 'constants/keys';
 import {useCallback, useEffect, useRef, useState} from 'react';
@@ -15,8 +14,8 @@ export function Converter() {
   const [gas, setGas] = useState(GASES.n.unit);
   //? add ts for better suggestions and use [] syntax
   const [conversion, setConversion] = useState({
-    source: {value: '0', unit: UNITS?.kg?.unit},
-    target: {value: '0', unit: UNITS?.kg?.unit},
+    source: {value: '0', unit: 'kg'},
+    target: {value: '0', unit: 'kg'},
   });
   const [activeField, setActiveField] = useState(FIELD.SOURCE);
   const {colors} = useTheme();
@@ -34,6 +33,7 @@ export function Converter() {
 
   const handleSelectGas = useCallback(gasUnit => {
     setGas(gasUnit);
+    //FIXME: perfom conversion
     bottomSheetRef.current.close();
   }, []);
 
@@ -53,6 +53,7 @@ export function Converter() {
       field === targetField ? unit : conversion[targetField].unit;
 
     const result = converter({
+      gas: gas,
       to: targetUnit,
       from: sourceUnit,
       input: sourceValue,
@@ -90,6 +91,7 @@ export function Converter() {
       activeField === FIELD.SOURCE ? FIELD.TARGET : FIELD.SOURCE;
     const {unit: targetUnit} = conversion[targetField];
     const result = converter({
+      gas: gas,
       to: targetUnit,
       from: sourceUnit,
       input: updatedSourceValue,
@@ -109,6 +111,7 @@ export function Converter() {
       <View style={[styles.inputContainer]}>
         <InputField
           ref={sourceRef}
+          gas={gas}
           isSource
           isActive={activeField === FIELD.SOURCE}
           value={conversion.source}
@@ -134,6 +137,7 @@ export function Converter() {
         </View>
         <InputField
           ref={targetRef}
+          gas={gas}
           isActive={activeField === FIELD.TARGET}
           value={conversion.target}
           onUnitSelect={unit => handleUnitSelection(FIELD.TARGET, unit)}
