@@ -1,22 +1,26 @@
+import {STORAGE} from '@constants';
+import {useFocusEffect} from '@react-navigation/native';
 import {globalStyles as gs} from '@styles';
+import {getItemFromLocalStorage} from '@utils';
+import {useCallback, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import {ConversionCard} from './components/ConversionCard';
 
-const sampleData = [
-  {
-    type: 'nitrogen',
-    sourceUnit: 'kg',
-    targetUnit: 'lb',
-    sourceValue: '1344234234223.1231213123',
-    targetValue: '324324234234.344',
-  },
-  // Add more sample data here if needed
-];
-
 export function History() {
+  const [data, setData] = useState([]);
 
-  //get data from storage on every usefocus
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        const history =
+          (await getItemFromLocalStorage(STORAGE.CONVERSION_HISTORY)) || [];
+        if (JSON.stringify(history) !== JSON.stringify(data)) {
+          setData(history);
+        }
+      })();
+    }, [data]),
+  );
 
   const {colors} = useTheme();
   return (
@@ -25,11 +29,21 @@ export function History() {
         History
       </Text>
       <FlatList
-        data={sampleData}
+        data={data}
         renderItem={({item}) => <ConversionCard data={item} />}
         keyExtractor={(item, index) => `${item.type}-${index}`}
         contentContainerStyle={[gs.pb3, gs.px3]}
+        ListEmptyComponent={NoDataFound}
       />
+    </View>
+  );
+}
+
+function NoDataFound() {
+  //TODO: add icon no history found
+  return (
+    <View style={[gs.flex1]}>
+      <Text>No history found.</Text>
     </View>
   );
 }

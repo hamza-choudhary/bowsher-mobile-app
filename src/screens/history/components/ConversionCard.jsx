@@ -7,10 +7,10 @@ import Icon from 'react-native-vector-icons/FontAwesome6';
 export function ConversionCard({data}) {
   const {colors, roundness} = useTheme();
 
-  // TODO: add optional chaning
+  // TODO: add remove history button + logic
 
   return (
-    <Card style={{borderRadius: roundness}}>
+    <Card style={[gs.mb3,{borderRadius: roundness}]}>
       <Card.Content style={gs.gap2}>
         <Text
           variant="titleMedium"

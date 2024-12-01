@@ -1,3 +1,4 @@
+import {saveConversionInStorage} from '@helpers';
 import {globalStyles as gs} from '@styles';
 import {WIDTH} from '@utils';
 import PropTypes from 'prop-types';
@@ -61,7 +62,13 @@ const createButtonConfig = (colors, gas) => [
   ],
 ];
 
-export function InputPad({onKeyPress, gas, openGasSelectSheet}) {
+export function InputPad({
+  onKeyPress,
+  gas,
+  openGasSelectSheet,
+  value,
+  activeField,
+}) {
   const {colors} = useTheme();
 
   const buttons = useMemo(() => createButtonConfig(colors, gas), [colors, gas]);
@@ -82,7 +89,7 @@ export function InputPad({onKeyPress, gas, openGasSelectSheet}) {
           // Handle favorite functionality
           break;
         case BUTTON_TYPES.EQUAL:
-          // Handle equal functionality
+          saveConversionInStorage(value, activeField, gas);
           break;
         case BUTTON_TYPES.SELECT_GAS:
           openGasSelectSheet();
@@ -96,7 +103,7 @@ export function InputPad({onKeyPress, gas, openGasSelectSheet}) {
           });
       }
     },
-    [onKeyPress, openGasSelectSheet],
+    [onKeyPress, openGasSelectSheet, activeField, value, gas],
   );
 
   return (
@@ -164,6 +171,8 @@ InputPad.propTypes = {
   onKeyPress: PropTypes.func,
   gas: PropTypes.string,
   openGasSelectSheet: PropTypes.func,
+  value: PropTypes.object.isRequired,
+  activeField: PropTypes.string,
 };
 InputButton.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
