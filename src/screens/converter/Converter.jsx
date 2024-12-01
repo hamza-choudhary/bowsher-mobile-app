@@ -107,7 +107,7 @@ export function Converter() {
   }, []);
 
   return (
-    <View style={[gs.flex1, {backgroundColor: colors.white}]}>
+    <View style={[gs.flex1, {backgroundColor: colors.background}]}>
       <View style={[styles.inputContainer]}>
         <InputField
           ref={sourceRef}
