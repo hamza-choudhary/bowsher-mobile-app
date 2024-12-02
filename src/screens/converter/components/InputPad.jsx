@@ -85,10 +85,15 @@ export function InputPad({
           );
           break;
         case BUTTON_TYPES.FAVORITE:
-          // Handle favorite functionality
+          saveConversionInStorage({
+            activeField,
+            conversion: value,
+            gas,
+            favorite: true,
+          });
           break;
         case BUTTON_TYPES.EQUAL:
-          saveConversionInStorage(value, activeField, gas);
+          saveConversionInStorage({activeField, conversion: value, gas});
           break;
         case BUTTON_TYPES.SELECT_GAS:
           openGasSelectSheet();

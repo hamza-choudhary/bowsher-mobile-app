@@ -1,8 +1,8 @@
 import {Alert} from '@common';
-import {removeConversionFromStorage} from '@helpers';
+import {addRemoveFavorite, removeConversionFromStorage} from '@helpers';
 import {globalStyles as gs} from '@styles';
 import PropTypes from 'prop-types';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {Card, IconButton, Text, useTheme} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome6';
@@ -10,8 +10,9 @@ import Icon from 'react-native-vector-icons/FontAwesome6';
 export function ConversionCard({data, refetch}) {
   const {colors, roundness} = useTheme();
   const [dialogVisible, setDialogVisible] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(data?.favorite);
 
-  const {id, type, sourceUnit, targetValue, targetUnit} = data;
+  const {id, type, sourceUnit, targetValue, targetUnit, favorite} = data;
 
   async function handleDelete() {
     await removeConversionFromStorage(id);
@@ -20,10 +21,17 @@ export function ConversionCard({data, refetch}) {
     //TODO: show toaster
   }
 
-  // TODO: add remove history button + logic
+  async function handleFavorite() {
+    await addRemoveFavorite(id);
+    setIsFavorite(p => !p);
+  }
 
   const showDialog = () => setDialogVisible(true);
   const hideDialog = () => setDialogVisible(false);
+
+  useEffect(() => {
+    setIsFavorite(favorite);
+  }, [favorite]);
 
   return (
     <>
@@ -37,7 +45,8 @@ export function ConversionCard({data, refetch}) {
             </Text>
             <View style={[gs.flexRow]}>
               <IconButton
-                icon="star-outline"
+                onPress={handleFavorite}
+                icon={isFavorite ? 'star' : 'star-outline'}
                 iconColor={colors.primary}
                 size={25}
               />
