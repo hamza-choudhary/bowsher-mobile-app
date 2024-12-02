@@ -1,17 +1,10 @@
+import {Alert} from '@common';
 import {removeConversionFromStorage} from '@helpers';
 import {globalStyles as gs} from '@styles';
 import PropTypes from 'prop-types';
 import {useState} from 'react';
 import {View} from 'react-native';
-import {
-  Button,
-  Card,
-  Dialog,
-  IconButton,
-  Portal,
-  Text,
-  useTheme,
-} from 'react-native-paper';
+import {Card, IconButton, Text, useTheme} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 
 export function ConversionCard({data, refetch}) {
@@ -75,21 +68,12 @@ export function ConversionCard({data, refetch}) {
           </View>
         </Card.Content>
       </Card>
-      <Portal>
-        <Dialog
-          style={{borderRadius: roundness}}
-          visible={dialogVisible}
-          onDismiss={hideDialog}>
-          <Dialog.Title>Are you sure?</Dialog.Title>
-          <Dialog.Content>
-            <Text variant="bodyMedium">this action will delete this item.</Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={hideDialog}>Cancel</Button>
-            <Button onPress={handleDelete}>Confirm</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <Alert
+        visible={dialogVisible}
+        message="this action will delete this item."
+        onConfirm={handleDelete}
+        onDismiss={hideDialog}
+      />
     </>
   );
 }

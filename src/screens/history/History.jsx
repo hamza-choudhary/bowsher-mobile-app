@@ -1,16 +1,17 @@
+import {Alert} from '@common';
 import {STORAGE} from '@constants';
 import {useFocusEffect} from '@react-navigation/native';
 import {globalStyles as gs} from '@styles';
 import {deleteItemFromLocalStorage, getItemFromLocalStorage} from '@utils';
 import {useCallback, useState} from 'react';
 import {FlatList, View} from 'react-native';
-import {Button, Dialog, Portal, Text, useTheme} from 'react-native-paper';
+import {Button, Text, useTheme} from 'react-native-paper';
 import {ConversionCard} from './components/ConversionCard';
 
 export function History() {
   const [data, setData] = useState([]);
   const [dialogVisible, setDialogVisible] = useState(false);
-  const {colors, roundness} = useTheme();
+  const {colors} = useTheme();
 
   const getHistoryFromStorage = useCallback(() => {
     (async () => {
@@ -25,7 +26,7 @@ export function History() {
   async function handleDelete() {
     await deleteItemFromLocalStorage(STORAGE.CONVERSION_HISTORY);
     getHistoryFromStorage();
-    setDialogVisible(false)
+    setDialogVisible(false);
     //TODO: show toaster
   }
 
@@ -53,23 +54,12 @@ export function History() {
         contentContainerStyle={[gs.pb3, gs.px3]}
         ListEmptyComponent={NoDataFound}
       />
-      <Portal>
-        <Dialog
-          style={{borderRadius: roundness}}
-          visible={dialogVisible}
-          onDismiss={hideDialog}>
-          <Dialog.Title>Are you sure?</Dialog.Title>
-          <Dialog.Content>
-            <Text variant="bodyMedium">
-              this action will clear all history.
-            </Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={hideDialog}>Cancel</Button>
-            <Button onPress={handleDelete}>Confirm</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <Alert
+        visible={dialogVisible}
+        message="this action will clear all history."
+        onConfirm={handleDelete}
+        onDismiss={hideDialog}
+      />
     </View>
   );
 }
