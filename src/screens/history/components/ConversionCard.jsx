@@ -1,4 +1,5 @@
 import {Alert} from '@common';
+import {MESSAGES} from '@constants';
 import {addRemoveFavorite, removeConversionFromStorage} from '@helpers';
 import {globalStyles as gs} from '@styles';
 import PropTypes from 'prop-types';
@@ -79,7 +80,7 @@ export function ConversionCard({data, refetch}) {
       </Card>
       <Alert
         visible={dialogVisible}
-        message="this action will delete this item."
+        message={MESSAGES.ALERT_DELETE_HISTORY_ITEM}
         onConfirm={handleDelete}
         onDismiss={hideDialog}
       />

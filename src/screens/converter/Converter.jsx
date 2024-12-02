@@ -2,7 +2,7 @@ import {CONVERSION_FIELD as FIELD} from '@constants';
 import {globalStyles as gs} from '@styles';
 import {GASES} from 'constants/keys';
 import {useCallback, useEffect, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {IconButton, useTheme} from 'react-native-paper';
 import {converter} from 'utils/converter';
 import {InputField} from './components/InputField';
@@ -106,7 +106,7 @@ export function Converter() {
   }, []);
 
   return (
-    <View style={[gs.flex1, {backgroundColor: colors.background}]}>
+    <SafeAreaView style={[gs.flex1, {backgroundColor: colors.background}]}>
       <View style={[styles.inputContainer]}>
         <InputField
           ref={sourceRef}
@@ -152,7 +152,7 @@ export function Converter() {
         openGasSelectSheet={handleOpenSheet}
       />
       <SelectGasSheet ref={bottomSheetRef} onGasSelect={handleSelectGas} />
-    </View>
+    </SafeAreaView>
   );
 }
 
