@@ -101,6 +101,16 @@ export function Converter() {
     }));
   }
 
+  const handleSwap = useCallback(() => {
+    setConversion(prev => ({source: prev.target, target: prev.source}));
+    setActiveField(p => (p === FIELD.SOURCE ? FIELD.TARGET : FIELD.SOURCE));
+    if (activeField === FIELD.SOURCE) {
+      targetRef.current.focus();
+      return;
+    }
+    sourceRef.current.focus();
+  }, [activeField]);
+
   useEffect(() => {
     sourceRef.current.focus();
   }, []);
@@ -120,7 +130,7 @@ export function Converter() {
         />
         <View style={[gs.justifyCenter, gs.z50]}>
           <IconButton
-            onPress={() => console.log('hello swap')}
+            onPress={handleSwap}
             icon="swap-vertical"
             size={32}
             iconColor={colors.black}

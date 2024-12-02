@@ -19,7 +19,7 @@ export const UNITS = {
   gal: {unit: 'gal', name: 'Gallons - US'},
   //?gases
   m3: {unit: 'm3', name: 'Cubic Meter'},
-  mmscf: {unit: 'MMscf', name: 'Million Standard Cubic Feet'},
+  mmscf: {unit: 'mmscf', name: 'Million Standard Cubic Feet'},
   nm3: {unit: 'nm3', name: 'Normal Cubic Meter'},
   scf: {unit: 'scf', name: 'Standard Cubic Feet'},
 };
