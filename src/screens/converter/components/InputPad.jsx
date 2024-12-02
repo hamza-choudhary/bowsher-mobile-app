@@ -75,7 +75,6 @@ export function InputPad({
 
   const handleKeyPress = useCallback(
     key => {
-      console.log(key);
       switch (key) {
         case BUTTON_TYPES.BACKSPACE:
           onKeyPress(prev => prev.slice(0, -1));
