@@ -28,14 +28,14 @@ export function converter({input, from, to, gas}) {
   }
 
   const conversionRates = gasData.conversionRates[from];
-  if (!conversionRates || !conversionRates[to]) {
+  if (!conversionRates || isNaN(conversionRates[to])) {
     console.warn(
       `Conversion not supported from ${from} to ${to} for gas ${gas}`,
     );
     return;
   }
 
-  const conversionFactor = conversionRates[to];
+  const conversionFactor = Number(conversionRates[to]);
   const result = inputNo * conversionFactor;
   return result.toString();
 }
