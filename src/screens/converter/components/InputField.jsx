@@ -60,7 +60,7 @@ export const InputField = forwardRef(function InputField(
                 gs.py2,
                 gs.hFull,
                 isSource ? gs.justifyEnd : gs.justifyStart,
-                {width: WIDTH / 6 + 5},
+                {width: WIDTH / 6 + 6},
               ]}
               onPress={openSheet}>
               <View
@@ -71,8 +71,12 @@ export const InputField = forwardRef(function InputField(
                   !isSource && styles.btnText,
                 ]}>
                 <Text
-                  style={[gs.uppercase, {color: colors.textSecondary}]}
-                  variant="titleLarge">
+                  style={[
+                    gs.uppercase,
+                    gs.flexShrink,
+                    {color: colors.textSecondary},
+                  ]}
+                  variant="titleMedium">
                   {value.unit}
                 </Text>
                 <Ionicons
