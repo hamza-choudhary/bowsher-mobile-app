@@ -100,8 +100,8 @@ export const InputField = forwardRef(function InputField(
 
 const styles = StyleSheet.create({
   input: {fontSize: 50, fontFamily: fontFamily, fontWeight: '400'},
-  targetBtn: {marginTop: 28},
-  sourceBtn: {marginBottom: 9},
+  targetBtn: {marginTop: 8},
+  sourceBtn: {marginBottom: 8},
 });
 
 InputField.propTypes = {
