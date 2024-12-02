@@ -51,6 +51,7 @@ export function History() {
         keyExtractor={(item, index) => `${item.type}-${index}`}
         contentContainerStyle={[gs.pb3, gs.px3]}
         ListEmptyComponent={NoDataFound}
+        showsVerticalScrollIndicator={false}
       />
       <Alert
         visible={dialogVisible}
