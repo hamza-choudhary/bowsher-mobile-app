@@ -1,3 +1,4 @@
+import {CONVERSION_FIELD as FIELD} from '@constants';
 import {globalStyles as gs} from '@styles';
 import {GASES} from 'constants/keys';
 import {useCallback, useEffect, useRef, useState} from 'react';
@@ -7,8 +8,6 @@ import {converter} from 'utils/converter';
 import {InputField} from './components/InputField';
 import {InputPad} from './components/InputPad';
 import {SelectGasSheet} from './components/SelectGasSheet';
-
-const FIELD = {SOURCE: 'source', TARGET: 'target'};
 
 export function Converter() {
   const [gas, setGas] = useState(GASES.n.unit);
@@ -107,7 +106,7 @@ export function Converter() {
   }, []);
 
   return (
-    <View style={[gs.flex1, {backgroundColor: colors.white}]}>
+    <View style={[gs.flex1, {backgroundColor: colors.background}]}>
       <View style={[styles.inputContainer]}>
         <InputField
           ref={sourceRef}
@@ -147,6 +146,8 @@ export function Converter() {
       </View>
       <InputPad
         gas={gas}
+        value={conversion}
+        activeField={activeField}
         onKeyPress={handleKeyPress}
         openGasSelectSheet={handleOpenSheet}
       />

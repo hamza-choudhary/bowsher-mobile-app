@@ -47,7 +47,7 @@ export const themeConfig = {
     primary500: '#921e21',
     primary600: '#87181a',
     secondary: '#DADADA',
-    background: '#EDEDED',
+    background: '#fafafa',
     primaryWithOpacity: 'rgba(135, 24, 26, 0.3)',
     black: '#3a3c3e',
     red: '#DB3022',

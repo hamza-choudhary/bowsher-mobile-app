@@ -1,3 +1,5 @@
+export const STORAGE = {CONVERSION_HISTORY : '@conversionHistory'};
+
 export const TOASTER = {
   ERROR: 'Error',
   SUCCESS: 'Success',
