@@ -1,4 +1,5 @@
 export {
+  addRemoveFavorite,
   removeConversionFromStorage,
   saveConversionInStorage,
 } from './converter';

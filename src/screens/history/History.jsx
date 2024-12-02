@@ -30,8 +30,6 @@ export function History() {
     //TODO: show toaster
   }
 
-  //TODO: create functionality for favorite
-
   const showDialog = () => setDialogVisible(true);
   const hideDialog = () => setDialogVisible(false);
 
