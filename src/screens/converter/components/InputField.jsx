@@ -68,7 +68,7 @@ export const InputField = forwardRef(function InputField(
                   gs.justifyEnd,
                   gs.flexRow,
                   gs.itemsCenter,
-                  !isSource && styles.btnText,
+                  isSource ? styles.sourceBtn : styles.targetBtn,
                 ]}>
                 <Text
                   style={[
@@ -100,7 +100,8 @@ export const InputField = forwardRef(function InputField(
 
 const styles = StyleSheet.create({
   input: {fontSize: 50, fontFamily: fontFamily, fontWeight: '400'},
-  btnText: {marginTop: 22},
+  targetBtn: {marginTop: 28},
+  sourceBtn: {marginBottom: 9},
 });
 
 InputField.propTypes = {
