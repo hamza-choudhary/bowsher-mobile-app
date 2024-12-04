@@ -25,6 +25,27 @@ export const UNITS = {
 };
 
 export const GASES = {
+  ar: {
+    unit: 'ar',
+    name: 'Argon',
+    conversionRates: {
+      kg: {lb: 2.2050, tonne: 0.0010, ton: 0.0011, l: 0.7176, gal: 0.1896, m3: 0.604, mmscf: 0.00, nm3: 0.5605, scf: 21.321},
+      lb: {kg: 0.4536, tonne: 0.0005, ton: 0.0005, l: 0.3255, gal: 0.0860, m3: 0.274, mmscf: 0.00, nm3: 0.2543, scf: 9.6710},
+      tonne: {kg: 1000.00, lb: 2205.0, ton: 1.1023, l: 717.58, gal: 189.56, m3: 604.00, mmscf: 0.021, nm3: 560.50, scf: 21320},
+      ton: {kg: 907.20, lb: 2000.0, tonne: 0.9072, l: 650.97, gal: 172.00, m3: 548.00, mmscf: 0.019, nm3: 508.47, scf: 19342},
+      l: {kg: 1.3936, lb: 3.0723, tonne: 0.0014, ton: 0.0015, gal: 0.2642, m3: 0.841, mmscf: 0.00, nm3: 0.7811, scf: 29.713},
+      gal: {kg: 5.2753, lb: 11.630, tonne: 0.0053, ton: 0.0058, l: 3.7854, m3: 3.184, mmscf: 0.00, nm3: 2.9558, scf: 112.48},
+      m3: {kg: 1.657, lb: 3.652, tonne: 0.002, ton: 0.002, l:  1.189 , gal: 0.314, mmscf: 0.00, nm3: 0.929, scf: 35.310},
+      mmscf: {kg: 46907, lb: 103413, tonne: 46.907, ton: 51.706, l: 33663, gal: 8893, m3: 28317.00, nm3: 26280, scf: 1000000},
+      nm3: {kg: 1.7841, lb: 3.9333, tonne: 0.0018, ton: 0.0020, l: 1.2802, gal: 0.3382, m3: 1.078, mmscf: 0.00, scf: 38.040},
+      scf: {kg: 0.0469, lb: 0.1034, tonne: 0.0000, ton: 0.0001, l: 0.0337, gal: 0.0089, m3: 0.028, mmscf: 0.00, nm3: 0.0263},
+    },
+    unitList: [
+      {title: 'Weights', data: [UNITS.kg, UNITS.lb, UNITS.tonne, UNITS.ton]},
+      {title: 'Gas', data: [UNITS.m3, UNITS.mmscf, UNITS.nm3, UNITS.scf]},
+      {title: 'Liquid', data: [UNITS.gal, UNITS.l]},
+    ],
+  },
   n: {
     unit: 'n2',
     name: 'Nitrogen',
