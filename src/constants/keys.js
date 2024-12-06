@@ -46,7 +46,7 @@ export const GASES = {
       {title: 'Liquid', data: [UNITS.gal, UNITS.l]},
     ],
   },
-  n: {
+  n2: {
     unit: 'n2',
     name: 'Nitrogen',
     conversionRates: {

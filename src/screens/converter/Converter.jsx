@@ -11,7 +11,7 @@ import {InputPad} from './components/InputPad';
 import {SelectGasSheet} from './components/SelectGasSheet';
 
 export function Converter() {
-  const [gas, setGas] = useState(GASES.n.unit);
+  const [gas, setGas] = useState(GASES.n2.unit);
   //? add ts for better suggestions and use [] syntax
   const [conversion, setConversion] = useState({
     source: {value: '0', unit: 'kg'},
