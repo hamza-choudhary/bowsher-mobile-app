@@ -2,13 +2,12 @@ import {saveConversionInStorage} from '@helpers';
 import {globalStyles as gs} from '@styles';
 import {WIDTH} from '@utils';
 import PropTypes from 'prop-types';
-import {useCallback, useMemo} from 'react';
+import {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const BUTTON_WIDTH = WIDTH / 4 - 15; // - 4 gap
 const BUTTON_TYPES = {
   BACKSPACE: 'backspace',
   FAVORITE: 'favorite',
@@ -16,6 +15,8 @@ const BUTTON_TYPES = {
   PLUS_MINUS: 'plusMinus',
   SELECT_GAS: 'selectGas',
 };
+
+const BUTTON_SIZE = WIDTH * 0.21;
 
 const createButtonConfig = (colors, gas) => [
   [
@@ -69,8 +70,8 @@ export function InputPad({
   value,
   activeField,
 }) {
+  const [buttonSize, setButtonSize] = useState(BUTTON_SIZE);
   const {colors} = useTheme();
-
   const buttons = useMemo(() => createButtonConfig(colors, gas), [colors, gas]);
 
   const handleKeyPress = useCallback(
@@ -110,8 +111,13 @@ export function InputPad({
     [onKeyPress, openGasSelectSheet, activeField, value, gas],
   );
 
+  const handleLayout = e => {
+    const {height} = e.nativeEvent.layout;
+    setButtonSize(height * 0.22);
+  };
+
   return (
-    <View style={[gs.flex1, styles.container]}>
+    <View style={[gs.flex1, styles.container]} onLayout={handleLayout}>
       {buttons.map((row, rowIndex) => (
         <View key={`row-${rowIndex}`} style={styles.row}>
           {row.map((button, buttonIndex) => (
@@ -119,6 +125,7 @@ export function InputPad({
               key={`button-${rowIndex}-${buttonIndex}`}
               {...button}
               onPress={() => handleKeyPress(button.id || button.label)}
+              buttonSize={buttonSize}
             />
           ))}
         </View>
@@ -133,6 +140,7 @@ function InputButton({
   onPress,
   hasPrimaryBackground = true,
   isSelect = false,
+  buttonSize = BUTTON_SIZE,
 }) {
   const {colors} = useTheme();
 
@@ -152,8 +160,13 @@ function InputButton({
       style={[
         gs.justifyCenter,
         gs.itemsCenter,
-        gs.roundedFull,
-        {backgroundColor, width: BUTTON_WIDTH, height: BUTTON_WIDTH},
+        gs.overflowHidden,
+        {
+          backgroundColor,
+          width: buttonSize,
+          height: buttonSize,
+          borderRadius: buttonSize / 2,
+        },
       ]}
       onPress={onPress}>
       {buttonContent}
@@ -184,4 +197,5 @@ InputButton.propTypes = {
   hasPrimaryBackground: PropTypes.bool,
   icon: PropTypes.element,
   isSelect: PropTypes.bool,
+  buttonSize: PropTypes.number,
 };
