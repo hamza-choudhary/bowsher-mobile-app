@@ -39,7 +39,7 @@ export function NoDataFound({
 }
 
 const styles = StyleSheet.create({
-  fullScreenContainer: {flex: 1, top: '40%', alignItems: 'center'},
+  fullScreenContainer: {flex: 1, top: '20%', alignItems: 'center'},
   button: {marginTop: 10},
 });
 

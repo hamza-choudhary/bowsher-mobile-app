@@ -1,8 +1,9 @@
 import {CONVERSION_FIELD as FIELD} from '@constants';
+import {useFocusEffect} from '@react-navigation/native';
 import {globalStyles as gs} from '@styles';
 import {GASES} from 'constants/keys';
 import {useCallback, useEffect, useRef, useState} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {Keyboard, SafeAreaView, StyleSheet, View} from 'react-native';
 import {IconButton, useTheme} from 'react-native-paper';
 import {converter} from 'utils/converter';
 import {InputField} from './components/InputField';
@@ -114,6 +115,21 @@ export function Converter() {
   useEffect(() => {
     sourceRef.current.focus();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      const dismissKeyboard = () => {
+        Keyboard.dismiss();
+      };
+      const keyboardListener = Keyboard.addListener(
+        'keyboardDidShow',
+        dismissKeyboard,
+      );
+      return () => {
+        keyboardListener.remove();
+      };
+    }, []),
+  );
 
   return (
     <SafeAreaView style={[gs.flex1, {backgroundColor: colors.background}]}>

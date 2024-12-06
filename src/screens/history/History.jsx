@@ -83,7 +83,7 @@ export function History() {
           <ConversionCard refetch={getHistoryFromStorage} data={item} />
         )}
         keyExtractor={(item, index) => `${item.type}-${index}`}
-        contentContainerStyle={[gs.pb3, gs.px3]}
+        contentContainerStyle={[gs.pb3, gs.px3, gs.flex1]}
         ListEmptyComponent={<NoDataFound fullScreen />}
         showsVerticalScrollIndicator={false}
       />
