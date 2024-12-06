@@ -31,11 +31,33 @@ export function Converter() {
     bottomSheetRef.current.open();
   }, []);
 
-  const handleSelectGas = useCallback(gasUnit => {
-    setGas(gasUnit);
-    //FIXME: perfom conversion
-    bottomSheetRef.current.close();
-  }, []);
+  const handleSelectGas = useCallback(
+    gasUnit => {
+      setGas(gasUnit);
+
+      const sourceField = activeField;
+      const targetField =
+        activeField === FIELD.SOURCE ? FIELD.TARGET : FIELD.SOURCE;
+
+      const {value: sourceValue, unit: sourceUnit} = conversion[sourceField];
+      const targetUnit = conversion[targetField].unit;
+
+      const result = converter({
+        gas: gasUnit,
+        to: targetUnit,
+        from: sourceUnit,
+        input: sourceValue,
+      });
+
+      setConversion(p => ({
+        ...p,
+        [targetField]: {...p[targetField], value: result},
+      }));
+
+      bottomSheetRef.current.close();
+    },
+    [activeField, conversion],
+  );
 
   function handleUnitSelection(field, unit) {
     setConversion(p => ({...p, [field]: {...p[field], unit}}));
