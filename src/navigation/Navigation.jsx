@@ -8,10 +8,11 @@ import {ROUTES} from './routes';
 
 const BottomTabs = createBottomTabNavigator({
   tabBar: props => <BottomTabsList {...props} />,
+  initialRouteName: ROUTES.CONVERTER,
   screens: {
     [ROUTES.HOME]: {
       screen: Home,
-      options: {tabBarLabel: BOTTOM_TABS_LABELS.HOME},
+      options: {tabBarLabel: BOTTOM_TABS_LABELS.HOME, headerShown: false},
     },
     [ROUTES.CONVERTER]: {
       screen: Converter,

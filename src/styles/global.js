@@ -21,6 +21,7 @@ export const globalStyles = StyleSheet.create({
   left0: {left: 0},
   right0: {right: 0},
   bottom0: {bottom: 0},
+  xy0: {right: 0, left: 0, bottom: 0, top: 0},
 
   //z-index
   z50: {zIndex: 50},
