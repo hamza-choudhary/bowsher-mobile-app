@@ -42,7 +42,7 @@ export function converter({input, from, to, gas}) {
 
 
 function formatResult(value) {
-  const MAX_DECIMALS = 6;
+  const MAX_DECIMALS = 5;
   // eslint-disable-next-line no-unused-vars
   const [_, decimalPart] = value.toString().split('.');
   if (decimalPart && decimalPart.length > MAX_DECIMALS) {
