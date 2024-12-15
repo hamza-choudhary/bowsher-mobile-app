@@ -37,25 +37,18 @@ export function converter({input, from, to, gas}) {
 
   const conversionFactor = Number(conversionRates[to]);
   const result = inputNo * conversionFactor;
-  return result.toString();
+  return formatResult(result);
 }
 
-//FIXME: Large no issue
-export function formatLargeNumber(num) {
-  let numStr = String(num);
-  if (numStr.includes('e')) {
-    let [coefficient, exponent] = numStr.split('e');
-    exponent = parseInt(exponent, 10);
-    coefficient = coefficient.replace('.', '');
-    if (exponent > 0) {
-      numStr = coefficient.padEnd(exponent + 1, '0');
-    } else {
-      numStr = '0.' + '0'.repeat(Math.abs(exponent) - 1) + coefficient;
-    }
-  }
 
-  numStr = numStr.replace(/\.?0+$/, '');
-  return numStr;
+function formatResult(value) {
+  const MAX_DECIMALS = 6;
+  // eslint-disable-next-line no-unused-vars
+  const [_, decimalPart] = value.toString().split('.');
+  if (decimalPart && decimalPart.length > MAX_DECIMALS) {
+    return parseFloat(value.toFixed(MAX_DECIMALS)).toString();
+  }
+  return value.toString();
 }
 
 export function getAllGases() {
