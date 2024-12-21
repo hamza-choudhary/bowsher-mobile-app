@@ -1,75 +1,115 @@
+import {validateConverterPaste} from '@helpers';
 import {globalStyles as gs} from '@styles';
+import {fontFamily, WIDTH} from '@utils';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import {forwardRef, useCallback, useRef} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {SelectUnitSheet} from './SelectUnitSheet';
 
-export function InputField({isTo, openSheet, onValueChange}) {
+export const InputField = forwardRef(function InputField(
+  {isSource = false, isActive, value, onUnitSelect, onFocus, onPaste, gas},
+  ref,
+) {
+  const bottomSheetRef = useRef();
   const {colors} = useTheme();
-  const [value, setValue] = useState('');
-
-  const validateAndSetValue = text => {
-    const numericText = text.replace(/[^0-9.]/g, '');
-
-    const parts = numericText.split('.');
-    const sanitizedText =
-      parts.length > 2 ? `${parts[0]}.${parts.slice(1).join('')}` : numericText;
-
-    if (sanitizedText === '' || isNaN(Number(sanitizedText))) {
-      return;
-    }
-
-    setValue(sanitizedText);
-    onValueChange?.(sanitizedText);
-  };
 
   const handlePaste = event => {
     const pastedText = event.nativeEvent.text;
-    validateAndSetValue(pastedText);
+    const validatedValue = validateConverterPaste(pastedText);
+    onPaste(validatedValue);
   };
 
-  const backgroundColor = isTo ? colors.primary100 : colors.background;
-  const textColor = isTo ? colors.white : colors.black;
+  const openSheet = useCallback(() => {
+    bottomSheetRef.current?.open();
+  }, []);
+
+  function uniSelectHandler(unit) {
+    bottomSheetRef.current?.close();
+    onUnitSelect(unit);
+  }
+
+  const textColor = isActive ? colors.black : colors.textSecondary;
 
   return (
-    <View style={[gs.flex1, {backgroundColor}]}>
-      <TouchableOpacity style={[gs.px4, gs.pt4, gs.pb1]} onPress={openSheet}>
-        <Text style={{color: textColor}} variant="labelLarge">
-          {isTo ? 'to' : 'from'} kilogram
-        </Text>
-        <Text style={{color: textColor}} variant="headlineMedium">
-          KG
-        </Text>
-      </TouchableOpacity>
-      <TextInput
-        style={[
-          gs.flex1,
-          gs.p4,
-          styles.input,
-          {backgroundColor, color: textColor},
-        ]}
-        value={value}
-        multiline
-        showSoftInputOnFocus={false}
-        contextMenuHidden={false}
-        onPaste={handlePaste}
-        selection={{start: value.length, end: value.length}}
-        onChangeText={validateAndSetValue}
-        textAlign="right"
+    <>
+      <View style={[gs.flex1, gs.overflowHidden]}>
+        <TouchableOpacity style={[gs.flex1, gs.px5]} onPress={onFocus}>
+          <View style={[gs.flex1, gs.flexRow]}>
+            <TextInput
+              style={[
+                gs.flex1,
+                gs.p1,
+                isSource ? gs.selfEnd : gs.selfStart,
+                styles.input,
+                {color: textColor},
+              ]}
+              ref={ref}
+              value={value.value || '0'}
+              multiline={true}
+              showSoftInputOnFocus={false}
+              contextMenuHidden={false}
+              onPaste={handlePaste}
+              selection={{start: value.value?.length, end: value.value?.length}}
+              textAlign="right"
+              onFocus={onFocus}
+            />
+            <TouchableOpacity
+              style={[
+                gs.py2,
+                gs.hFull,
+                isSource ? gs.justifyEnd : gs.justifyStart,
+                {width: WIDTH / 6 + 6},
+              ]}
+              onPress={openSheet}>
+              <View
+                style={[
+                  gs.justifyEnd,
+                  gs.flexRow,
+                  gs.itemsCenter,
+                  isSource ? styles.sourceBtn : styles.targetBtn,
+                ]}>
+                <Text
+                  style={[
+                    gs.uppercase,
+                    gs.flexShrink,
+                    {color: colors.textSecondary},
+                  ]}
+                  variant="titleMedium">
+                  {value.unit}
+                </Text>
+                <Ionicons
+                  color={colors.textSecondary}
+                  size={25}
+                  name="chevron-expand"
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </View>
+      <SelectUnitSheet
+        ref={bottomSheetRef}
+        onUnitSelect={uniSelectHandler}
+        gas={gas}
       />
-    </View>
+    </>
   );
-}
+});
 
 const styles = StyleSheet.create({
-  input: {
-    fontSize: 45,
-    fontWeight: '200',
-  },
+  input: {fontSize: 50, fontFamily: fontFamily, fontWeight: '400'},
+  targetBtn: {marginTop: 8},
+  sourceBtn: {marginBottom: 8},
 });
 
 InputField.propTypes = {
-  isTo: PropTypes.bool,
-  openSheet: PropTypes.func,
-  onValueChange: PropTypes.func,
+  isSource: PropTypes.bool,
+  isActive: PropTypes.bool.isRequired,
+  value: PropTypes.object.isRequired,
+  onUnitSelect: PropTypes.func.isRequired,
+  onFocus: PropTypes.func.isRequired,
+  onPaste: PropTypes.func.isRequired,
+  gas: PropTypes.string,
 };

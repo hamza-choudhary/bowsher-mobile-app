@@ -8,7 +8,7 @@ import {StyleSheet, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export function BottomTabsList({state, descriptors, navigation}) {
@@ -28,7 +28,7 @@ export function BottomTabsList({state, descriptors, navigation}) {
   };
 
   return (
-    <View style={[styles.tabBar, {backgroundColor: colors.secondary}, padding]}>
+    <View style={[styles.tabBar, {backgroundColor: colors.primary}, padding]}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
         const label =
@@ -61,6 +61,7 @@ export function BottomTabsList({state, descriptors, navigation}) {
 
         return (
           <PlatformPressable
+            android_ripple={{radius: 1}}
             key={route.key}
             href={buildHref(route.name, route.params)}
             accessibilityRole="button"
@@ -80,21 +81,15 @@ export function BottomTabsList({state, descriptors, navigation}) {
 
 function renderIcon(label, isFocused, colors) {
   const size = 25;
-  const color = isFocused ? colors.primary600 : colors.black;
+  const color = colors.white;
   let Icon;
 
   if (label === BOTTOM_TABS_LABELS.CONVERTER) {
     Icon = <AntDesign name="swap" size={size} color={color} />;
   } else if (label === BOTTOM_TABS_LABELS.HISTORY) {
     Icon = <MCIcon name="history" size={size} color={color} />;
-  } else if (label === BOTTOM_TABS_LABELS.EXPLORE) {
-    Icon = (
-      <Ionicons
-        name={isFocused ? 'compass-sharp' : 'compass-outline'}
-        size={size}
-        color={color}
-      />
-    );
+  } else if (label === BOTTOM_TABS_LABELS.HOME) {
+    Icon = <Entypo name="home" size={size} color={color} />;
   } else {
     return null;
   }
@@ -104,13 +99,13 @@ function renderIcon(label, isFocused, colors) {
       <View
         style={[
           styles.icon,
-          isFocused && {backgroundColor: colors.primaryWithOpacity},
+          isFocused && {backgroundColor: colors.whiteWithOpacity},
         ]}>
         {Icon}
       </View>
       <Text
         variant={isFocused ? 'labelSmall' : 'bodySmall'}
-        style={[isFocused && {color: colors.primary600}]}>
+        style={[{color: colors.white}]}>
         {label}
       </Text>
     </View>

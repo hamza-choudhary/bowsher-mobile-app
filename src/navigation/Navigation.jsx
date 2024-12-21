@@ -1,28 +1,33 @@
 import {BOTTOM_TABS_LABELS} from '@constants';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStaticNavigation} from '@react-navigation/native';
-import {Converter, Explore, History} from '@screens';
+import {Converter, History, Home} from '@screens';
 import {BottomTabsList} from './components/BottomTabsList';
+import {HeaderTitle} from './components/HeaderTitle';
 import {ROUTES} from './routes';
 
 const BottomTabs = createBottomTabNavigator({
   tabBar: props => <BottomTabsList {...props} />,
+  initialRouteName: ROUTES.CONVERTER,
   screens: {
+    [ROUTES.HOME]: {
+      screen: Home,
+      options: {tabBarLabel: BOTTOM_TABS_LABELS.HOME, headerShown: false},
+    },
     [ROUTES.CONVERTER]: {
       screen: Converter,
-      options: {
-        tabBarLabel: BOTTOM_TABS_LABELS.CONVERTER,
-        headerTitle: BOTTOM_TABS_LABELS.CONVERTER,
-      },
+      options: {tabBarLabel: BOTTOM_TABS_LABELS.CONVERTER},
     },
     [ROUTES.HISTORY]: {
       screen: History,
       options: {tabBarLabel: BOTTOM_TABS_LABELS.HISTORY},
     },
-    [ROUTES.EXPLORE]: {
-      screen: Explore,
-      options: {tabBarLabel: BOTTOM_TABS_LABELS.EXPLORE},
-    },
+  },
+  screenOptions: {
+    headerStyle: {backgroundColor: '#87181a'},
+    headerTitleAlign: 'center',
+    headerTitleStyle: {color: '#fafafa'},
+    headerTitle: props => <HeaderTitle {...props} />,
   },
 });
 
