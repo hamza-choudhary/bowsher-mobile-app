@@ -1,7 +1,6 @@
-import {CONVERSION_FIELD as FIELD} from '@constants';
+import {CONVERSION_FIELD as FIELD, GASES} from '@constants';
 import {useFocusEffect} from '@react-navigation/native';
 import {globalStyles as gs} from '@styles';
-import {GASES} from 'constants/keys';
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {Keyboard, SafeAreaView, StyleSheet, View} from 'react-native';
 import {IconButton, useTheme} from 'react-native-paper';

@@ -59,7 +59,7 @@ export function History() {
             <Text variant="titleLarge" style={[gs.textCenter, gs.my3]}>
               History
             </Text>
-            <Button mode="outlined" icon="history" onPress={showDialog}>
+            <Button mode="contained" icon="history" onPress={showDialog}>
               Clear
             </Button>
           </View>
@@ -83,7 +83,11 @@ export function History() {
           <ConversionCard refetch={getHistoryFromStorage} data={item} />
         )}
         keyExtractor={(item, index) => `${item.type}-${index}`}
-        contentContainerStyle={[gs.pb3, gs.px3, gs.flex1]}
+        contentContainerStyle={[
+          gs.pb3,
+          gs.px3,
+          filteredData.length === 0 && gs.flex1,
+        ]}
         ListEmptyComponent={<NoDataFound fullScreen />}
         showsVerticalScrollIndicator={false}
       />

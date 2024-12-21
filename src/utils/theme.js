@@ -2,13 +2,14 @@ import {
   configureFonts,
   MD3LightTheme as DefaultTheme,
 } from 'react-native-paper';
+import {isIOS} from './platformChecker';
 
 export const fontFamily = 'Poppins';
 
 const createFontStyle = (size, weight, letterSpacing, lineHeight) => ({
   fontFamily: fontFamily,
   fontSize: size,
-  fontWeight: weight,
+  fontWeight: adjustWeights(weight),
   letterSpacing,
   lineHeight,
 });
@@ -29,7 +30,11 @@ const fontConfig = {
   bodySmall: createFontStyle(11, '400', 0.4, 16),
   bodyMedium: createFontStyle(14, '400', 0.25, 20),
   bodyLarge: createFontStyle(16, '400', 0.15, 24),
-  default: {fontFamily: fontFamily, fontWeight: '400', letterSpacing: 0},
+  default: {
+    fontFamily: fontFamily,
+    fontWeight: adjustWeights('400'),
+    letterSpacing: 0,
+  },
 };
 
 export const themeConfig = {
@@ -72,3 +77,11 @@ export const themeConfig = {
     xl: 40,
   },
 };
+
+function adjustWeights(weight) {
+  if (!isIOS()) {
+    const numericWeight = Number(weight);
+    return (numericWeight + 200).toString();
+  }
+  return weight;
+}
