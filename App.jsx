@@ -10,7 +10,7 @@ import Toast from 'react-native-toast-message';
 export default function App() {
   useEffect(() => {
     (async () => {
-      // await BootSplash.hide({fade: true});
+      await BootSplash.hide({fade: true});
     })();
   }, []);
 
